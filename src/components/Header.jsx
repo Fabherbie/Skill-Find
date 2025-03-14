@@ -6,57 +6,46 @@ import { FiSearch } from "react-icons/fi";
 
 const Header = () => {
   return (
-    <header className="w-full">
-      <div className="bg-green-600 py-2 text-white text-sm">
-        <div className="flex justify-between items-center mx-auto px-6 container">
-          <div className="flex items-center space-x-4">
-            <span>📞 +234 (789) 568 25</span>
-            <span>📧 example@gmail.com</span>
-          </div>
-          <div className="flex items-center space-x-4">
-            <span className="flex items-center space-x-1 cursor-pointer">
-              <IoGlobeOutline /> <span>English</span> ▼
-            </span>
-            <span className="flex items-center space-x-1 cursor-pointer">
-              <BsCurrencyDollar /> <span>NGN</span> ▼
-            </span>
-            <FaFacebookF className="hover:text-gray-300 cursor-pointer" />
-            <FaTwitter className="hover:text-gray-300 cursor-pointer" />
-            <FaLinkedin className="hover:text-gray-300 cursor-pointer" />
-          </div>
-        </div>
+    <header className="flex justify-between items-center bg-green-600 px-6 py-4 rounded-3xl">
+      {/* Logo */}
+      <div className="flex items-center gap-2">
+        <div className="bg-gray-50 w-6 h-6" /> {/* Placeholder Logo */}
+        <h1 className="font-['Quantico'] font-bold text-yellow-400 text-2xl">
+          SkillFind
+        </h1>
       </div>
 
-      {/* Navigation Bar */}
-      <nav className="bg-white shadow-md w-full">
-        <div className="flex justify-between items-center mx-auto px-6 py-4 container">
-          {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="bg-yellow-400 p-2 rounded-md">
-              <img src="/logo.png" alt="Logo" className="w-10 h-10" />
-            </div>
-            <span className="font-bold text-xl">SkillFind</span>
-          </div>
-
-          {/* Navigation Links */}
-          <ul className="flex space-x-6 text-black">
-            <li className="hover:text-green-700 cursor-pointer">Home</li>
-            <li className="hover:text-green-700 cursor-pointer">About</li>
-            <li className="hover:text-green-700 cursor-pointer">Services ▼</li>
-            <li className="hover:text-green-700 cursor-pointer">Pages ▼</li>
-            <li className="hover:text-green-700 cursor-pointer">Blog ▼</li>
-            <li className="hover:text-green-700 cursor-pointer">Contact</li>
-          </ul>
-
-          {/* Search & Button */}
-          <div className="flex items-center space-x-4">
-            <FiSearch className="text-green-700 text-xl cursor-pointer" />
-            <button className="bg-yellow-400 hover:bg-yellow-500 px-4 py-2 rounded-md font-semibold text-black transition">
-              GET A QUOTE →
-            </button>
-          </div>
-        </div>
+      {/* Navigation Links */}
+      <nav className="flex gap-6 font-semibold text-white">
+        <a href="/" className="font-bold text-yellow-400">
+          Home
+        </a>
+        <a href="/about" className="hover:text-yellow-400">
+          About Us
+        </a>
+        <a href="/services" className="hover:text-yellow-400">
+          Services
+        </a>
+        <a href="/blogs" className="hover:text-yellow-400">
+          Blogs
+        </a>
+        <a href="/pages" className="hover:text-yellow-400">
+          Pages
+        </a>
+        <a href="/contact" className="hover:text-yellow-400">
+          Contact us
+        </a>
       </nav>
+
+      {/* Auth Buttons */}
+      <div className="flex gap-2">
+        <button className="px-4 py-2 border border-yellow-400 rounded-2xl text-white">
+          Register
+        </button>
+        <button className="bg-yellow-400 px-4 py-2 rounded-2xl text-blue-950">
+          LOG IN
+        </button>
+      </div>
     </header>
   );
 };
