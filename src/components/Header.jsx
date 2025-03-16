@@ -1,38 +1,58 @@
 import { FaFacebookF, FaTwitter, FaLinkedin } from "react-icons/fa";
-import { IoGlobeOutline } from "react-icons/io5";
-import { BsCurrencyDollar } from "react-icons/bs";
-import { FiSearch } from "react-icons/fi";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
-import WhiteLogo from "/src/assets/images/Group.svg";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false); // Mobile menu state
   const [dropdown, setDropdown] = useState(null); // Dropdown state
+  const [isScrolledUp, setIsScrolledUp] = useState(false); // Scroll behavior
+
+  // Optimized Scroll Tracking
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      requestAnimationFrame(() => {
+        setIsScrolledUp(window.scrollY < lastScrollY);
+        lastScrollY = window.scrollY;
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Toggle Dropdown
   const toggleDropdown = (menu) => {
     setDropdown(dropdown === menu ? null : menu);
   };
 
+  // Close mobile menu on link click
+  const closeMenu = () => {
+    setIsOpen(false);
+    setDropdown(null);
+  };
+
   return (
-    <header className="bg-[#2E8B57] px-6 py-4 w-full transition-all">
-      <div className="flex justify-between items-center mx-auto max-w-7xl">
+    <header
+      className={`fixed top-5 left-1/2 transform -translate-x-1/2 w-[90%] max-w-7xl rounded-2xl bg-[#2E8B57] px-6 py-4 transition-all duration-300 z-50 shadow-lg 
+      ${isScrolledUp ? "top-0 w-full " : ""}`}
+    >
+      <div className="flex justify-between items-center mx-auto">
         {/* Logo */}
         <div className="flex items-center space-x-2">
-          <img src={WhiteLogo} alt="SkillFind Logo" className="h-10" />
+          <img src="/images/Group.svg" alt="SkillFind Logo" className="h-10" />
           <h1 className="font-bold text-[#FFD700] text-2xl">SkillFind</h1>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex space-x-8 text-white">
-          <a href="#" className="hover:text-[#FFD700]">
-            Home
-          </a>
-          <a href="#" className="hover:text-[#FFD700]">
-            About Us
-          </a>
+          {["Home", "About Us", "Blogs", "Contact Us"].map((item) => (
+            <a key={item} href="#" className="hover:text-[#FFD700]">
+              {item}
+            </a>
+          ))}
 
           {/* Services Dropdown */}
           <div className="relative">
@@ -50,23 +70,21 @@ const Header = () => {
                   exit={{ opacity: 0, y: -10 }}
                   className="left-0 absolute space-y-2 bg-white shadow-lg mt-2 p-3 rounded-lg text-black"
                 >
-                  <a href="#" className="block hover:text-[#2E8B57]">
-                    Web Development
-                  </a>
-                  <a href="#" className="block hover:text-[#2E8B57]">
-                    Graphic Design
-                  </a>
-                  <a href="#" className="block hover:text-[#2E8B57]">
-                    Marketing
-                  </a>
+                  {["Web Development", "Graphic Design", "Marketing"].map(
+                    (service) => (
+                      <a
+                        key={service}
+                        href="#"
+                        className="block hover:text-[#2E8B57]"
+                      >
+                        {service}
+                      </a>
+                    )
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
-
-          <a href="#" className="hover:text-[#FFD700]">
-            Blogs
-          </a>
 
           {/* Pages Dropdown */}
           <div className="relative">
@@ -84,30 +102,25 @@ const Header = () => {
                   exit={{ opacity: 0, y: -10 }}
                   className="left-0 absolute space-y-2 bg-white shadow-lg mt-2 p-3 rounded-lg text-black"
                 >
-                  <a href="#" className="block hover:text-[#2E8B57]">
-                    Pricing
-                  </a>
-                  <a href="#" className="block hover:text-[#2E8B57]">
-                    FAQ
-                  </a>
-                  <a href="#" className="block hover:text-[#2E8B57]">
-                    Testimonials
-                  </a>
+                  {["Pricing", "FAQ", "Testimonials"].map((page) => (
+                    <a
+                      key={page}
+                      href="#"
+                      className="block hover:text-[#2E8B57]"
+                    >
+                      {page}
+                    </a>
+                  ))}
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
-
-          <a href="#" className="hover:text-[#FFD700]">
-            Contact Us
-          </a>
         </nav>
 
         {/* Buttons + Mobile Menu */}
         <div className="flex items-center space-x-4">
-          {/* Register & Log In Buttons */}
           <div className="hidden md:flex space-x-2">
-            <button className="hover:bg-[#FFC107] px-4 py-2 border border-[#FFD700] rounded-lg text-white">
+            <button className="hover:bg-[#FFD700] px-4 py-2 border border-[#FFD700] rounded-lg text-white">
               Register
             </button>
             <button className="bg-[#FFD700] hover:bg-[#FFC107] px-4 py-2 rounded-lg text-blue-950">
@@ -134,12 +147,16 @@ const Header = () => {
             exit={{ opacity: 0, y: -20 }}
             className="md:hidden space-y-4 bg-[#2E8B57] mt-2 p-4 rounded-lg"
           >
-            <a href="#" className="block text-white">
-              Home
-            </a>
-            <a href="#" className="block text-white">
-              About Us
-            </a>
+            {["Home", "About Us", "Blogs", "Contact Us"].map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="block text-white"
+                onClick={closeMenu}
+              >
+                {item}
+              </a>
+            ))}
 
             {/* Mobile Services Dropdown */}
             <button
@@ -150,56 +167,20 @@ const Header = () => {
             </button>
             {dropdown === "mobileServices" && (
               <div className="space-y-2 pl-4">
-                <a href="#" className="block text-gray-300">
-                  Web Development
-                </a>
-                <a href="#" className="block text-gray-300">
-                  Graphic Design
-                </a>
-                <a href="#" className="block text-gray-300">
-                  Marketing
-                </a>
+                {["Web Development", "Graphic Design", "Marketing"].map(
+                  (service) => (
+                    <a
+                      key={service}
+                      href="#"
+                      className="block text-gray-300"
+                      onClick={closeMenu}
+                    >
+                      {service}
+                    </a>
+                  )
+                )}
               </div>
             )}
-
-            <a href="#" className="block text-white">
-              Blogs
-            </a>
-
-            {/* Mobile Pages Dropdown */}
-            <button
-              onClick={() => toggleDropdown("mobilePages")}
-              className="block w-full text-white text-left"
-            >
-              Pages <ChevronDown className="inline-block w-4 h-4" />
-            </button>
-            {dropdown === "mobilePages" && (
-              <div className="space-y-2 pl-4">
-                <a href="#" className="block text-gray-300">
-                  Pricing
-                </a>
-                <a href="#" className="block text-gray-300">
-                  FAQ
-                </a>
-                <a href="#" className="block text-gray-300">
-                  Testimonials
-                </a>
-              </div>
-            )}
-
-            <a href="#" className="block text-white">
-              Contact Us
-            </a>
-
-            {/* Register & Log In Buttons for Mobile */}
-            <div className="flex flex-col space-y-2 mt-4">
-              <button className="hover:bg-[#FFC107] px-4 py-2 border border-[#FFD700] rounded-lg text-white">
-                Register
-              </button>
-              <button className="bg-[#FFD700] hover:bg-[#FFC107] px-4 py-2 rounded-lg text-blue-950">
-                LOG IN
-              </button>
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
