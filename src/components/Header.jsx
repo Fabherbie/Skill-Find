@@ -1,5 +1,6 @@
 import { FaFacebookF, FaTwitter, FaLinkedin } from "react-icons/fa";
 import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom"; // Import NavLink
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
@@ -11,14 +12,12 @@ const Header = () => {
   // Optimized Scroll Tracking
   useEffect(() => {
     let lastScrollY = window.scrollY;
-
     const handleScroll = () => {
       requestAnimationFrame(() => {
         setIsScrolledUp(window.scrollY < lastScrollY);
         lastScrollY = window.scrollY;
       });
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -28,16 +27,10 @@ const Header = () => {
     setDropdown(dropdown === menu ? null : menu);
   };
 
-  // Close mobile menu on link click
-  const closeMenu = () => {
-    setIsOpen(false);
-    setDropdown(null);
-  };
-
   return (
     <header
       className={`fixed top-5 left-1/2 transform -translate-x-1/2 w-[90%] max-w-7xl rounded-2xl bg-[#2E8B57] px-6 py-4 transition-all duration-300 z-50 shadow-lg 
-      ${isScrolledUp ? "top-0 w-full " : ""}`}
+      ${isScrolledUp ? "top-0 w-full" : ""}`}
     >
       <div className="flex justify-between items-center mx-auto">
         {/* Logo */}
@@ -47,18 +40,57 @@ const Header = () => {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-8 text-white">
-          {["Home", "About Us", "Blogs", "Contact Us"].map((item) => (
-            <a key={item} href="#" className="hover:text-[#FFD700]">
-              {item}
-            </a>
-          ))}
+        <nav className="hidden md:flex items-center space-x-8 text-white">
+          <NavLink
+            to="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className={({ isActive }) =>
+              `hover:text-[#FFD700] transition-all ${
+                isActive ? "text-[#FFD700] text-lg font-bold" : "text-white"
+              }`
+            }
+          >
+            Home
+          </NavLink>
+
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              `hover:text-[#FFD700] transition-all ${
+                isActive ? "text-[#FFD700] text-lg font-bold" : "text-white"
+              }`
+            }
+          >
+            About Us
+          </NavLink>
+
+          <NavLink
+            to="/blogs"
+            className={({ isActive }) =>
+              `hover:text-[#FFD700] transition-all ${
+                isActive ? "text-[#FFD700] text-lg font-bold" : "text-white"
+              }`
+            }
+          >
+            Blogs
+          </NavLink>
+
+          <NavLink
+            to="/contact"
+            className={({ isActive }) =>
+              `hover:text-[#FFD700] transition-all ${
+                isActive ? "text-[#FFD700] text-lg font-bold" : "text-white"
+              }`
+            }
+          >
+            Contact Us
+          </NavLink>
 
           {/* Services Dropdown */}
           <div className="relative">
             <button
               onClick={() => toggleDropdown("services")}
-              className="flex items-center hover:text-[#FFD700]"
+              className="flex items-center hover:text-[#FFD700] transition-all duration-300"
             >
               Services <ChevronDown className="ml-1 w-4 h-4" />
             </button>
@@ -68,17 +100,25 @@ const Header = () => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="left-0 absolute space-y-2 bg-white shadow-lg mt-2 p-3 rounded-lg text-black"
+                  className="left-0 absolute bg-white shadow-lg mt-2 p-3 rounded-lg text-black"
                 >
                   {["Web Development", "Graphic Design", "Marketing"].map(
                     (service) => (
-                      <a
+                      <NavLink
                         key={service}
-                        href="#"
-                        className="block hover:text-[#2E8B57]"
+                        to={`/services/${service
+                          .toLowerCase()
+                          .replace(" ", "-")}`}
+                        className={({ isActive }) =>
+                          `block hover:text-[#2E8B57] ${
+                            isActive
+                              ? "text-[#FFD700] font-bold"
+                              : "text-gray-800"
+                          }`
+                        }
                       >
                         {service}
-                      </a>
+                      </NavLink>
                     )
                   )}
                 </motion.div>
@@ -90,7 +130,7 @@ const Header = () => {
           <div className="relative">
             <button
               onClick={() => toggleDropdown("pages")}
-              className="flex items-center hover:text-[#FFD700]"
+              className="flex items-center hover:text-[#FFD700] transition-all duration-300"
             >
               Pages <ChevronDown className="ml-1 w-4 h-4" />
             </button>
@@ -100,16 +140,22 @@ const Header = () => {
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="left-0 absolute space-y-2 bg-white shadow-lg mt-2 p-3 rounded-lg text-black"
+                  className="left-0 absolute bg-white shadow-lg mt-2 p-3 rounded-lg w-48 text-black"
                 >
                   {["Pricing", "FAQ", "Testimonials"].map((page) => (
-                    <a
+                    <NavLink
                       key={page}
-                      href="#"
-                      className="block hover:text-[#2E8B57]"
+                      to={`/${page.toLowerCase().replace(" ", "-")}`}
+                      className={({ isActive }) =>
+                        `block py-1 hover:text-[#2E8B57] ${
+                          isActive
+                            ? "text-[#FFD700] font-bold"
+                            : "text-gray-800"
+                        }`
+                      }
                     >
                       {page}
-                    </a>
+                    </NavLink>
                   ))}
                 </motion.div>
               )}
@@ -148,39 +194,19 @@ const Header = () => {
             className="md:hidden space-y-4 bg-[#2E8B57] mt-2 p-4 rounded-lg"
           >
             {["Home", "About Us", "Blogs", "Contact Us"].map((item) => (
-              <a
+              <NavLink
                 key={item}
-                href="#"
-                className="block text-white"
-                onClick={closeMenu}
+                to={`/${item.toLowerCase().replace(" ", "-")}`}
+                className={({ isActive }) =>
+                  `block text-white hover:text-[#FFD700] transition-all ${
+                    isActive ? "text-[#FFD700] text-lg font-bold" : ""
+                  }`
+                }
+                onClick={() => setIsOpen(false)}
               >
                 {item}
-              </a>
+              </NavLink>
             ))}
-
-            {/* Mobile Services Dropdown */}
-            <button
-              onClick={() => toggleDropdown("mobileServices")}
-              className="block w-full text-white text-left"
-            >
-              Services <ChevronDown className="inline-block w-4 h-4" />
-            </button>
-            {dropdown === "mobileServices" && (
-              <div className="space-y-2 pl-4">
-                {["Web Development", "Graphic Design", "Marketing"].map(
-                  (service) => (
-                    <a
-                      key={service}
-                      href="#"
-                      className="block text-gray-300"
-                      onClick={closeMenu}
-                    >
-                      {service}
-                    </a>
-                  )
-                )}
-              </div>
-            )}
           </motion.div>
         )}
       </AnimatePresence>
