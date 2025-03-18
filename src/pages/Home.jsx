@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { GoLocation } from "react-icons/go";
 import { FaCheckCircle, FaLock, FaCalendarCheck } from "react-icons/fa";
@@ -8,8 +9,23 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination, Autoplay, Navigation } from "swiper/modules";
 import testimonials from "../data/testimonialsData";
+import categories from "../data/categories.jsx";
 
 const Home = () => {
+  console.log("Categories Data:", categories);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showAll, setShowAll] = useState(false);
+
+  const filteredCategories = categories.filter((category) =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const navigate = useNavigate();
+
+  const displayedCategories = showAll
+    ? filteredCategories
+    : filteredCategories.slice(0, 6);
+
   return (
     <section className="w-full">
       {/* Hero Section */}
@@ -126,8 +142,75 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Features Section - Properly Below Hero */}
-      <div className="bg-gray-100 py-16 w-full">
+      {/* Categories Section */}
+      <div className="bg-yellow-50 py-16 text-center">
+        <h2 className="mb-6 font-bold text-blue-950 text-3xl">
+          Explore Our Categories
+        </h2>
+        <p className="mb-6 text-gray-600 text-lg">
+          Browse through our wide range of services and professionals.
+        </p>
+
+        {/* Search Input */}
+        <div className="flex justify-center mb-8">
+          <div className="flex items-center bg-white shadow-md p-3 rounded-full w-full max-w-lg">
+            <FiSearch className="ml-3 w-6 h-6 text-gray-500" />
+            <input
+              type="text"
+              placeholder="Search categories..."
+              className="ml-2 outline-none w-full text-blue-950 text-base"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
+
+        {/* Categories Grid */}
+        <div className="gap-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mx-auto max-w-5xl">
+          {displayedCategories.length > 0 ? (
+            displayedCategories.map((category, index) => (
+              <motion.div
+                key={index}
+                className="flex flex-col justify-center items-center bg-white shadow-md p-6 rounded-lg transition-all duration-300 cursor-pointer"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.1 }}
+                onClick={() => navigate(`/services/${category.slug}`)}
+              >
+                <motion.div
+                  initial={{ color: "#2E8B57" }} // Initial green
+                  whileHover={{
+                    color: "#FFD700",
+                    transition: { duration: 0.3 },
+                  }} // Change to gold on hover
+                >
+                  {React.cloneElement(category.icon, {
+                    className: "w-12 h-12",
+                  })}
+                </motion.div>
+                <h3 className="mt-3 font-semibold text-[#2E8B57] text-lg">
+                  {category.name}
+                </h3>
+              </motion.div>
+            ))
+          ) : (
+            <p className="col-span-full text-gray-500">No categories found.</p>
+          )}
+        </div>
+
+        {/* View More / View Less Button */}
+        {filteredCategories.length > 6 && (
+          <button
+            className="bg-green-600 hover:bg-yellow-500 mt-6 px-6 py-3 rounded-full font-semibold text-white transition"
+            onClick={() => setShowAll(!showAll)}
+          >
+            {showAll ? "View Less" : "View More"}
+          </button>
+        )}
+      </div>
+
+      {/* Features Section */}
+      <div className="bg-white py-16 w-full">
         <div className="mx-auto px-6 max-w-7xl text-center">
           <h2 className="mb-6 font-bold text-blue-950 text-3xl">
             Why Choose Us?
@@ -138,7 +221,7 @@ const Home = () => {
 
           <div className="gap-8 grid grid-cols-1 md:grid-cols-3">
             <motion.div
-              className="bg-white shadow-md p-6 rounded-lg text-center"
+              className="bg-yellow-50 shadow-md p-6 rounded-lg text-center"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -156,7 +239,7 @@ const Home = () => {
             </motion.div>
 
             <motion.div
-              className="bg-white shadow-md p-6 rounded-lg text-center"
+              className="bg-yellow-50 shadow-md p-6 rounded-lg text-center"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -174,7 +257,7 @@ const Home = () => {
             </motion.div>
 
             <motion.div
-              className="bg-white shadow-md p-6 rounded-lg text-center"
+              className="bg-yellow-50 shadow-md p-6 rounded-lg text-center"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
@@ -195,7 +278,7 @@ const Home = () => {
       </div>
 
       {/* Testimonials Section */}
-      <div className="bg-white py-16 w-full">
+      <div className="bg-yellow-50 py-16 w-full">
         <div className="mx-auto px-6 max-w-6xl text-center">
           <h2 className="mb-6 font-bold text-blue-950 text-3xl">
             What Our Users Say About SkillFind
@@ -215,7 +298,7 @@ const Home = () => {
           >
             {testimonials.map((testimonial, index) => (
               <SwiperSlide key={index}>
-                <div className="flex flex-col items-center bg-gray-100 shadow-lg p-8 rounded-lg text-center">
+                <div className="flex flex-col items-center bg-white shadow-lg p-8 rounded-lg text-center">
                   <img
                     src={testimonial.image}
                     alt={testimonial.name}
