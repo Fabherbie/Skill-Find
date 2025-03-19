@@ -6,10 +6,10 @@ function App() {
   return (
     <Router>
       <Header />
-      <Home />
+      {/* <Home /> */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/services:categorySlug" element={<ServicesPage />} />
+        <Route path="/services/:categorySlug" element={<ServicesPage />} />
       </Routes>
 
       {/* Other components */}

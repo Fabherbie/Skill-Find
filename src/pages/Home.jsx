@@ -201,7 +201,7 @@ const Home = () => {
         {/* View More / View Less Button */}
         {filteredCategories.length > 6 && (
           <button
-            className="bg-green-600 hover:bg-yellow-500 mt-6 px-6 py-3 rounded-full font-semibold text-white transition"
+            className="bg-[#2E8B57] hover:bg-yellow-500 mt-6 px-6 py-3 rounded-full font-semibold text-white transition"
             onClick={() => setShowAll(!showAll)}
           >
             {showAll ? "View Less" : "View More"}

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import {
   Wrench,
   Car,
@@ -83,8 +83,8 @@ const categories = [
     icon: <Home className="w-12 h-12 text-[#2E8B57]" />,
   },
   {
-    name: "Tech Support",
-    slug: "tech-support",
+    name: "Mechanic",
+    slug: "mechanic",
     icon: <Phone className="w-12 h-12 text-[#2E8B57]" />,
   },
   {
@@ -148,5 +148,67 @@ const categories = [
     icon: <Monitor className="w-12 h-12 text-[#2E8B57]" />,
   },
 ];
+
+// const Categories = () => {
+//   const [selectedCategory, setSelectedCategory] = useState(null);
+//   const [modalOpen, setModalOpen] = useState(false);
+
+//   const handleCategoryClick = (category) => {
+//     setSelectedCategory(serviceProviders[category] || []);
+//     setModalOpen(true);
+//   };
+
+//   return (
+//     <div className="p-6">
+//       <h1 className="mb-4 font-bold text-2xl">Choose a Category</h1>
+
+//       <div className="gap-4 grid grid-cols-2 md:grid-cols-3">
+//         <button
+//           onClick={() => handleCategoryClick("carpentry")}
+//           className="bg-blue-500 hover:bg-blue-600 shadow-md p-4 rounded-lg text-white"
+//         >
+//           Carpentry
+//         </button>
+
+//         <button
+//           onClick={() => handleCategoryClick("applianceRepair")}
+//           className="bg-green-500 hover:bg-green-600 shadow-md p-4 rounded-lg text-white"
+//         >
+//           Appliance Repair
+//         </button>
+
+//         <button
+//           onClick={() => handleCategoryClick("catering")}
+//           className="bg-red-500 hover:bg-red-600 shadow-md p-4 rounded-lg text-white"
+//         >
+//           Catering
+//         </button>
+//       </div>
+
+//       {/* Modal Component */}
+//       <ServiceProvidersModal
+//         isOpen={modalOpen}
+//         onClose={() => setModalOpen(false)}
+//         providers={selectedCategory || []}
+//       />
+//     </div>
+//   );
+// };
+
+// const CategoryList = () => {
+//   return (
+//     <div className="gap-4 grid grid-cols-1 md:grid-cols-3">
+//       {categories.map((category) => (
+//         <Link
+//           key={category.slug}
+//           to={`/services/${category.slug}`}
+//           className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-lg text-white text-center transition"
+//         >
+//           {category.name}
+//         </Link>
+//       ))}
+//     </div>
+//   );
+// };
 
 export default categories;
