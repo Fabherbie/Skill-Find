@@ -1,15 +1,14 @@
-import { FaFacebookF, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { FaSearch } from "react-icons/fa";
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom"; // Import NavLink
+import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 const Header = () => {
-  const [isOpen, setIsOpen] = useState(false); // Mobile menu state
-  const [dropdown, setDropdown] = useState(null); // Dropdown state
-  const [isScrolledUp, setIsScrolledUp] = useState(false); // Scroll behavior
+  const [isOpen, setIsOpen] = useState(false);
+  const [dropdown, setDropdown] = useState(null);
+  const [isScrolledUp, setIsScrolledUp] = useState(false);
 
-  // Optimized Scroll Tracking
   useEffect(() => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
@@ -22,194 +21,178 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Toggle Dropdown
   const toggleDropdown = (menu) => {
     setDropdown(dropdown === menu ? null : menu);
   };
 
   return (
-    <header
-      className={`fixed top-5 left-1/2 transform -translate-x-1/2 w-[90%] max-w-7xl rounded-2xl bg-[#2E8B57] px-6 py-4 transition-all duration-300 z-50 shadow-lg 
-      ${isScrolledUp ? "top-0 w-full" : ""}`}
-    >
-      <div className="flex justify-between items-center mx-auto">
+    <header className="top-0 left-0 z-50 fixed bg-white shadow-md px-8 py-4 w-full">
+      <div className="flex justify-between items-center mx-auto max-w-7xl">
         {/* Logo */}
-        <div className="flex items-center space-x-2">
-          <img src="/images/Group.svg" alt="SkillFind Logo" className="h-10" />
-          <h1 className="font-bold text-[#FFD700] text-2xl">SkillFind</h1>
+        <div className="flex items-center space-x-4">
+          <img
+            src="/images/skill-find logo.svg"
+            alt="SkillFind Logo"
+            className="h-10"
+          />
+          <h1 className="font-bold text-green-600 text-2xl">SkillFind</h1>
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8 text-white">
-          <NavLink
-            to="/"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className={({ isActive }) =>
-              `hover:text-[#FFD700] transition-all ${
-                isActive ? "text-[#FFD700] text-lg font-bold" : "text-white"
-              }`
-            }
-          >
-            Home
-          </NavLink>
-
-          <NavLink
-            to="/about"
-            className={({ isActive }) =>
-              `hover:text-[#FFD700] transition-all ${
-                isActive ? "text-[#FFD700] text-lg font-bold" : "text-white"
-              }`
-            }
-          >
-            About Us
-          </NavLink>
-
-          <NavLink
-            to="/blogs"
-            className={({ isActive }) =>
-              `hover:text-[#FFD700] transition-all ${
-                isActive ? "text-[#FFD700] text-lg font-bold" : "text-white"
-              }`
-            }
-          >
-            Blogs
-          </NavLink>
-
-          <NavLink
-            to="/contact"
-            className={({ isActive }) =>
-              `hover:text-[#FFD700] transition-all ${
-                isActive ? "text-[#FFD700] text-lg font-bold" : "text-white"
-              }`
-            }
-          >
-            Contact Us
-          </NavLink>
-
-          {/* Services Dropdown */}
+        <nav className="hidden md:flex flex-grow justify-center items-center space-x-8 text-blue-950">
+          {/* Find Artisans */}
           <div className="relative">
             <button
-              onClick={() => toggleDropdown("services")}
-              className="flex items-center hover:text-[#FFD700] transition-all duration-300"
+              onClick={() => toggleDropdown("artisans")}
+              className="flex items-center hover:text-green-600 transition-all duration-300"
             >
-              Services <ChevronDown className="ml-1 w-4 h-4" />
+              Find Artisans <ChevronDown className="ml-1 w-4 h-4" />
             </button>
             <AnimatePresence>
-              {dropdown === "services" && (
+              {dropdown === "artisans" && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="left-0 absolute bg-white shadow-lg mt-2 p-3 rounded-lg text-black"
+                  className="absolute bg-white shadow-lg mt-2 p-4 rounded-lg w-56 text-blue-950"
                 >
-                  {["Web Development", "Graphic Design", "Marketing"].map(
-                    (service) => (
-                      <NavLink
-                        key={service}
-                        to={`/services/${service
-                          .toLowerCase()
-                          .replace(" ", "-")}`}
-                        className={({ isActive }) =>
-                          `block hover:text-[#2E8B57] ${
-                            isActive
-                              ? "text-[#FFD700] font-bold"
-                              : "text-gray-800"
-                          }`
-                        }
-                      >
-                        {service}
-                      </NavLink>
-                    )
-                  )}
+                  <NavLink
+                    to="/post-job"
+                    className="block py-2 hover:text-green-600"
+                  >
+                    Post a Job
+                  </NavLink>
+                  <NavLink
+                    to="/hire-expert"
+                    className="block py-2 hover:text-green-600"
+                  >
+                    Hire an Expert
+                  </NavLink>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
 
-          {/* Pages Dropdown */}
+          {/* Find Work */}
           <div className="relative">
             <button
-              onClick={() => toggleDropdown("pages")}
-              className="flex items-center hover:text-[#FFD700] transition-all duration-300"
+              onClick={() => toggleDropdown("work")}
+              className="flex items-center hover:text-green-600 transition-all duration-300"
             >
-              Pages <ChevronDown className="ml-1 w-4 h-4" />
+              Find Work <ChevronDown className="ml-1 w-4 h-4" />
             </button>
             <AnimatePresence>
-              {dropdown === "pages" && (
+              {dropdown === "work" && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
-                  className="left-0 absolute bg-white shadow-lg mt-2 p-3 rounded-lg w-48 text-black"
+                  className="absolute bg-white shadow-lg mt-2 p-4 rounded-lg w-56 text-blue-950"
                 >
-                  {["Pricing", "FAQ", "Testimonials"].map((page) => (
-                    <NavLink
-                      key={page}
-                      to={`/${page.toLowerCase().replace(" ", "-")}`}
-                      className={({ isActive }) =>
-                        `block py-1 hover:text-[#2E8B57] ${
-                          isActive
-                            ? "text-[#FFD700] font-bold"
-                            : "text-gray-800"
-                        }`
-                      }
-                    >
-                      {page}
-                    </NavLink>
-                  ))}
+                  <NavLink
+                    to="/bid-work"
+                    className="block py-2 hover:text-green-600"
+                  >
+                    Bid Work with Ads
+                  </NavLink>
+                  <NavLink
+                    to="/find-expertise"
+                    className="block py-2 hover:text-green-600"
+                  >
+                    Find Work for Your Expertise
+                  </NavLink>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Pricing */}
+          <NavLink to="/pricing" className="hover:text-green-600">
+            Pricing
+          </NavLink>
+
+          {/* Explore */}
+          <div className="relative">
+            <button
+              onClick={() => toggleDropdown("explore")}
+              className="flex items-center hover:text-green-600 transition-all duration-300"
+            >
+              Explore <ChevronDown className="ml-1 w-4 h-4" />
+            </button>
+            <AnimatePresence>
+              {dropdown === "explore" && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute bg-white shadow-lg mt-2 p-4 rounded-lg w-56 text-blue-950"
+                >
+                  <NavLink
+                    to="/blog"
+                    className="block py-2 hover:text-green-600"
+                  >
+                    Blog
+                  </NavLink>
+                  <NavLink
+                    to="/faqs"
+                    className="block py-2 hover:text-green-600"
+                  >
+                    FAQs
+                  </NavLink>
+                  <NavLink
+                    to="/success-stories"
+                    className="block py-2 hover:text-green-600"
+                  >
+                    Success Stories
+                  </NavLink>
+                  <NavLink
+                    to="/how-to-hire"
+                    className="block py-2 hover:text-green-600"
+                  >
+                    How to Hire
+                  </NavLink>
+                  <NavLink
+                    to="/find-work"
+                    className="block py-2 hover:text-green-600"
+                  >
+                    Find Work
+                  </NavLink>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
         </nav>
 
-        {/* Buttons + Mobile Menu */}
-        <div className="flex items-center space-x-4">
-          <div className="hidden md:flex space-x-2">
-            <button className="hover:bg-[#FFD700] px-4 py-2 border border-[#FFD700] rounded-lg text-white">
-              Register
-            </button>
-            <button className="bg-[#FFD700] hover:bg-[#FFC107] px-4 py-2 rounded-lg text-blue-950">
-              LOG IN
-            </button>
-          </div>
+        {/* Search Bar */}
+        <div className="hidden relative md:flex items-center mx-6">
+          <input
+            type="text"
+            placeholder="Search Service"
+            className="px-4 py-2 border border-gray-300 focus:border-green-600 rounded-lg focus:outline-none w-64 text-blue-950"
+          />
+          <button className="top-1/2 right-2 absolute bg-green-600 hover:bg-green-500 p-2 rounded-lg text-white -translate-y-1/2 transform">
+            <FaSearch />
+          </button>
+        </div>
+
+        {/* Buttons */}
+        <div className="flex items-center space-x-6">
+          <button className="px-4 py-2 border hover:border-green-600 border-blue-950 rounded-lg text-blue-950 hover:text-green-600 cursor-pointer">
+            Login
+          </button>
+          <button className="bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg text-white">
+            Join Now
+          </button>
 
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden text-white"
+            className="md:hidden text-blue-950"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? "X" : "☰"}
           </button>
         </div>
       </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="md:hidden space-y-4 bg-[#2E8B57] mt-2 p-4 rounded-lg"
-          >
-            {["Home", "About Us", "Blogs", "Contact Us"].map((item) => (
-              <NavLink
-                key={item}
-                to={`/${item.toLowerCase().replace(" ", "-")}`}
-                className={({ isActive }) =>
-                  `block text-white hover:text-[#FFD700] transition-all ${
-                    isActive ? "text-[#FFD700] text-lg font-bold" : ""
-                  }`
-                }
-                onClick={() => setIsOpen(false)}
-              >
-                {item}
-              </NavLink>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
     </header>
   );
 };

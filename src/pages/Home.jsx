@@ -41,46 +41,30 @@ const Home = () => {
           {/* Left Content */}
           <div className="space-y-6 max-w-2xl text-left">
             <h1 className="font-bold text-blue-950 text-5xl leading-tight">
-              Find Trusted Professionals for Every Need, Anytime!
+              Find Trusted Professionals or Get Hired Instantly!
             </h1>
             <p className="text-blue-950 text-xl">
-              From plumbing to car repairs, SkillFind connects you with reliable
-              service providers in minutes.
+              Whether you're looking to hire skilled experts or showcase your
+              services, SkillFind is your go-to platform.
             </p>
             <p className="text-gray-600 text-base">
-              Browse 100+ Verified Listings & Connect with Top-Rated
-              Professionals Instantly!
+              Connect with top-rated professionals & verified job opportunities
+              in minutes.
             </p>
 
-            {/* Search Bar */}
-            <div className="flex items-center space-x-2 bg-white shadow-lg p-3 border border-green-600 rounded-full w-full max-w-3xl">
-              <div className="flex items-center space-x-2 w-[60%]">
-                <div className="flex justify-center items-center bg-yellow-400/10 rounded-full w-12 h-12">
-                  <FiSearch className="w-6 h-6 text-yellow-400" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="What service do you need?"
-                  className="px-2 outline-none w-full font-medium text-blue-950 text-base"
-                />
-              </div>
-
-              {/* Divider */}
-              <div className="bg-gray-300 mx-3 w-[1px] h-8"></div>
-
-              <div className="flex items-center space-x-2 w-[40%]">
-                <div className="flex justify-center items-center bg-yellow-400/10 rounded-full w-12 h-12">
-                  <GoLocation className="w-6 h-6 text-yellow-400" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Enter Location"
-                  className="px-2 outline-none w-full font-medium text-blue-950 text-base"
-                />
-              </div>
-
-              <button className="bg-yellow-400 ml-4 px-6 py-3 rounded-full font-semibold text-blue-950 text-lg">
-                Search
+            {/* Call-to-Action Buttons */}
+            <div className="flex sm:flex-row flex-col sm:space-x-6 space-y-4 sm:space-y-0 mt-6">
+              <button
+                className="bg-green-700 hover:bg-green-800 px-6 py-3 rounded-lg font-semibold text-white text-lg transition"
+                onClick={() => navigate("/post-job")}
+              >
+                Post a Job
+              </button>
+              <button
+                className="bg-white hover:bg-green-100 px-6 py-3 border border-green-700 rounded-lg font-semibold text-green-700 text-lg transition"
+                onClick={() => navigate("/find-work")}
+              >
+                Find Work
               </button>
             </div>
           </div>
@@ -143,7 +127,7 @@ const Home = () => {
       </div>
 
       {/* Categories Section */}
-      <div className="bg-yellow-50 py-16 text-center">
+      <div className="bg-gray-100 py-16 text-center">
         <h2 className="mb-6 font-bold text-blue-950 text-3xl">
           Explore Our Categories
         </h2>
@@ -177,18 +161,16 @@ const Home = () => {
                 whileHover={{ scale: 1.1 }}
                 onClick={() => navigate(`/services/${category.slug}`)}
               >
-                <motion.div
-                  initial={{ color: "#2E8B57" }} // Initial green
-                  whileHover={{
-                    color: "#FFD700",
-                    transition: { duration: 0.3 },
-                  }} // Change to gold on hover
-                >
-                  {React.cloneElement(category.icon, {
-                    className: "w-12 h-12",
-                  })}
-                </motion.div>
-                <h3 className="mt-3 font-semibold text-[#2E8B57] text-lg">
+                {/* FlatIcon SVG */}
+                <motion.img
+                  src={category.icon}
+                  alt={category.name}
+                  className="w-12 h-12"
+                  initial={{ scale: 1 }}
+                  whileHover={{ scale: 1.2 }}
+                />
+
+                <h3 className="mt-3 font-semibold text-green-700 text-lg">
                   {category.name}
                 </h3>
               </motion.div>
@@ -201,7 +183,7 @@ const Home = () => {
         {/* View More / View Less Button */}
         {filteredCategories.length > 6 && (
           <button
-            className="bg-[#2E8B57] hover:bg-yellow-500 mt-6 px-6 py-3 rounded-full font-semibold text-white transition"
+            className="bg-green-600 hover:bg-green-500 mt-6 px-6 py-3 rounded-full font-semibold text-white transition"
             onClick={() => setShowAll(!showAll)}
           >
             {showAll ? "View Less" : "View More"}
@@ -221,7 +203,7 @@ const Home = () => {
 
           <div className="gap-8 grid grid-cols-1 md:grid-cols-3">
             <motion.div
-              className="bg-yellow-50 shadow-md p-6 rounded-lg text-center"
+              className="bg-gray-100 shadow-md p-6 rounded-lg text-center"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
@@ -239,12 +221,12 @@ const Home = () => {
             </motion.div>
 
             <motion.div
-              className="bg-yellow-50 shadow-md p-6 rounded-lg text-center"
+              className="bg-gray-100 shadow-md p-6 rounded-lg text-center"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <FaLock className="mx-auto mb-4 w-12 h-12 text-yellow-500" />
+              <FaLock className="mx-auto mb-4 w-12 h-12 text-pink-600" />
               <h3 className="font-semibold text-blue-950 text-xl">
                 Secure Payments
               </h3>
@@ -257,7 +239,7 @@ const Home = () => {
             </motion.div>
 
             <motion.div
-              className="bg-yellow-50 shadow-md p-6 rounded-lg text-center"
+              className="bg-gray-100 shadow-md p-6 rounded-lg text-center"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
@@ -278,7 +260,7 @@ const Home = () => {
       </div>
 
       {/* Testimonials Section */}
-      <div className="bg-yellow-50 py-16 w-full">
+      <div className="bg-gray-100 py-16 w-full">
         <div className="mx-auto px-6 max-w-6xl text-center">
           <h2 className="mb-6 font-bold text-blue-950 text-3xl">
             What Our Users Say About SkillFind
@@ -315,7 +297,7 @@ const Home = () => {
               </SwiperSlide>
             ))}
           </Swiper>
-          <button className="bg-yellow-400 mt-6 px-6 py-3 rounded-full font-semibold text-blue-950">
+          <button className="bg-green-600 mt-6 px-6 py-3 rounded-full font-semibold text-white">
             Write a Review
           </button>
         </div>
