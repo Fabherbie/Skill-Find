@@ -157,6 +157,12 @@ const Header = () => {
                   >
                     Find Work
                   </NavLink>
+                  <NavLink
+                    to="/about"
+                    className="block py-2 hover:text-green-600"
+                  >
+                    About Us
+                  </NavLink>
                 </motion.div>
               )}
             </AnimatePresence>
