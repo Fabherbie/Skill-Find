@@ -56,13 +56,13 @@ const Home = () => {
             <div className="flex sm:flex-row flex-col sm:space-x-6 space-y-4 sm:space-y-0 mt-6">
               <button
                 className="bg-green-700 hover:bg-green-800 px-6 py-3 rounded-lg font-semibold text-white text-lg transition"
-                onClick={() => navigate("/post-job")}
+                onClick={() => navigate("/signup-customer")}
               >
                 Post a Job
               </button>
               <button
                 className="bg-white hover:bg-green-100 px-6 py-3 border border-green-700 rounded-lg font-semibold text-green-700 text-lg transition"
-                onClick={() => navigate("/find-work")}
+                onClick={() => navigate("/signup-provider")}
               >
                 Find Work
               </button>
