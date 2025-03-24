@@ -395,97 +395,113 @@ const serviceProviders = [
 
 const ServicesPage = () => {
   const navigate = useNavigate();
+  const { categorySlug } = useParams();
+  const [selectedProvider, setSelectedProvider] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOption, setSortOption] = useState("rating");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const { categorySlug } = useParams();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedProvider, setSelectedProvider] = useState(null);
-  console.log("category slug from URL:", categorySlug);
 
-  const filteredProviders = categorySlug
-    ? serviceProviders.filter(
-        (provider) =>
-          provider.category.toLowerCase() === categorySlug.toLowerCase()
-      )
-    : [];
+  let filteredProviders = serviceProviders.filter(
+    (provider) => provider.category.toLowerCase() === categorySlug.toLowerCase()
+  );
 
-  const handleContactClick = (provider) => {
-    console.log("Clicked provider:", provider); // Debugging
-    if (!provider) {
-      console.error("No provider found!");
-      return;
+  // Apply search filter
+  if (searchQuery) {
+    filteredProviders = filteredProviders.filter(
+      (provider) =>
+        provider.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        provider.location.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
+
+  // Apply sorting
+  filteredProviders.sort((a, b) => {
+    if (sortOption === "rating") {
+      return b.rating - a.rating;
+    } else if (sortOption === "name") {
+      return a.name.localeCompare(b.name);
     }
-    setSelectedProvider(provider);
-    setModalOpen(true);
-  };
+    return 0;
+  });
 
   return (
-    <div className="bg-yellow-50 py-10 min-h-screen">
-      <div className="mx-auto px-6 max-w-6xl">
-        <h1 className="mt-20 mb-4 font-bold text-blue-950 text-3xl text-center">
-          {categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1)} Service
-          Providers
-        </h1>
-
-        {/* Back Button */}
-        <div className="flex justify-center mb-6">
-          <button
-            onClick={() => navigate(-1)}
-            className="bg-[#2E8B57] hover:bg-gray-400 px-4 py-2 rounded-lg text-white"
-          >
-            ← Back to Categories
-          </button>
-        </div>
-
-        {filteredProviders.length > 0 ? (
-          <div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-2">
-            {filteredProviders.map((provider) => (
-              <div
-                key={provider.id}
-                className="bg-white shadow-lg rounded-lg overflow-hidden hover:scale-105 transition duration-300 transform"
-              >
-                <img
-                  src={provider.image}
-                  alt={provider.name}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-5">
-                  <h2 className="font-semibold text-blue-950 text-xl">
-                    {provider.name}
-                  </h2>
-                  <p className="flex items-center mt-2 text-gray-600">
-                    <FaMapMarkerAlt className="mr-2 text-red-500" />
-                    {provider.location}
-                  </p>
-                  <p className="flex items-center mt-2 text-yellow-500">
-                    <FaStar className="mr-1" /> {provider.rating} / 5
-                  </p>
-                  <p className="flex items-center mt-2 text-gray-700">
-                    <FaPhone className="mr-2 text-green-600" />
-                    {provider.phone}
-                  </p>
-                  <button
-                    className="bg-[#2E8B57] hover:bg-yellow-500 mt-4 py-2 rounded-lg w-full font-semibold text-white transition cursor-pointer"
-                    onClick={() => handleContactClick(provider)}
-                  >
-                    Contact Provider
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500 text-lg text-center">
-            No service providers found for this category.
-          </p>
-        )}
+    <div className="mx-auto px-4 py-6 pt-24 container">
+      {/* Back Button */}
+      <div className="flex justify-start mb-4">
+        <button
+          className="bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg text-white"
+          onClick={() => navigate(-1)}
+        >
+          ← Back
+        </button>
       </div>
-      {/* Modal Component */}
-      {modalOpen && (
+
+      <h1 className="mt-4 font-bold text-blue-950 text-2xl">
+        {categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1)} Providers
+      </h1>
+
+      <div className="flex gap-4 mt-4">
+        <input
+          type="text"
+          placeholder="Search by name or location"
+          className="px-4 py-2 border border-blue-950 rounded-lg w-full"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <select
+          className="px-4 py-2 border border-blue-950 rounded-lg text-blue-950"
+          value={sortOption}
+          onChange={(e) => setSortOption(e.target.value)}
+        >
+          <option value="rating" className="text-blue-950">
+            Sort by Rating
+          </option>
+          <option value="name" className="text-blue-950">
+            Sort by Name
+          </option>
+        </select>
+      </div>
+
+      {filteredProviders.length === 0 ? (
+        <p className="mt-4 text-gray-500 text-center">
+          No service providers found.
+        </p>
+      ) : (
+        <div className="gap-6 grid grid-cols-1 md:grid-cols-3 mt-6">
+          {filteredProviders.map((provider) => (
+            <div
+              key={provider.id}
+              className="bg-gray-100 shadow-lg p-4 rounded-lg hover:scale-105 transition duration-300 transform"
+            >
+              <img
+                src={provider.image}
+                alt={provider.name}
+                className="rounded-lg w-full h-40 object-cover"
+              />
+              <h2 className="mt-2 font-semibold text-blue-950 text-lg">
+                {provider.name}
+              </h2>
+              <p className="text-gray-600">Location: {provider.location}</p>
+              <p className="text-gray-600">Rating: ⭐ {provider.rating}</p>
+              <p className="text-gray-600">Phone: {provider.phone}</p>
+              <button
+                className="bg-green-700 hover:bg-green-600 mt-2 px-4 py-2 rounded-lg w-full text-white"
+                onClick={() => setSelectedProvider(provider)}
+              >
+                Contact Provider
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {selectedProvider && (
         <ServiceProvidersModal
           provider={selectedProvider}
-          onClose={() => setModalOpen(false)}
+          onClose={() => setSelectedProvider(null)}
         />
       )}
     </div>

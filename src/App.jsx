@@ -1,20 +1,56 @@
+<<<<<<< HEAD
 import Header from "./components/Header";
 import About from "./pages/About";
+=======
+// import Header from "./components/Header";
+// import Home from "./pages/Home";
+// import ServicesPage from "./pages/ServicePage";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// function App() {
+//   return (
+//     <Router>
+//       <Header />
+//       {/* <Home /> */}
+//       <Routes>
+//         <Route path="/" element={<Home />} />
+//         <Route path="/services/:categorySlug" element={<ServicesPage />} />
+//       </Routes>
+
+//       {/* Other components */}
+//     </Router>
+//   );
+// }
+
+// export default App;
+import Header from "./components/Header"; //
+>>>>>>> 49d58d55b8169637f88ce3d6fa6fb19e3bc5f51e
 import Home from "./pages/Home";
 import ServicesPage from "./pages/ServicePage";
+import SignupCustomer from "./pages/SignupCustomer";
+import SignupProvider from "./pages/SignupProvider";
+import DashboardLayout from "./pages/DashboardLayout";
+import CustomerDashboard from "./pages/CustomerDashboard";
+import ProviderDashboard from "./pages/ProviderDashboard";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 function App() {
   return (
     <Router>
-      <Header />
-      {/* <Home /> */}
+      <Header /> {/* ✅ Stays for public pages */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/services/:categorySlug" element={<ServicesPage />} />
-      </Routes>
+        <Route path="/signup-customer" element={<SignupCustomer />} />
+        <Route path="/signup-provider" element={<SignupProvider />} />
 
-      {/* Other components */}
+        {/* Dashboard Layout (with Headers.jsx inside) */}
+        <Route path="/dashboard/*" element={<DashboardLayout />}>
+          <Route index element={<CustomerDashboard />} />
+          <Route path="provider" element={<ProviderDashboard />} />
+          console.log("App is running!");
+        </Route>
+      </Routes>
     </Router>
   );
 }
