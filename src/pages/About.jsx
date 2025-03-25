@@ -1,4 +1,6 @@
-export default function About() {
+import React from "react";
+
+const About = () => {
   return (
     <div className="about">
       <div className="flex flex-col md:flex-row items-center gap-6 p-6 bg-gray-100 rounded-lg shadow-md">
@@ -67,13 +69,6 @@ export default function About() {
       </div>
     </div>
   );
-}
-// import React from "react";
+};
 
-// const About = () => {
-//   return (
-
-//   );
-// };
-
-// export default About
+export default About;
