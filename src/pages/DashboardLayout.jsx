@@ -1,18 +1,20 @@
 import { Outlet } from "react-router-dom";
+import DashboardHeader from "../components/DashboardHeader";
 import Sidebar from "../components/Sidebar";
-import Headers from "../components/Headers";
+
 const DashboardLayout = () => {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
       <Sidebar />
 
-      <div className="flex flex-col flex-1">
-        {/* Header */}
-        <Headers />
+      {/* Main Content Area */}
+      <div className="flex flex-col flex-grow">
+        {/* Dashboard Header (Only appears inside dashboard) */}
+        <DashboardHeader />
 
-        {/* Page Content */}
-        <div className="flex-1 p-6 overflow-y-auto">
+        {/* Main Dashboard Content */}
+        <div className="p-6">
           <Outlet />
         </div>
       </div>

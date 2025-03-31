@@ -2,8 +2,9 @@ import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
-    <div className="flex flex-col bg-gray-900 p-6 w-64 text-white">
-      <h2 className="mb-6 font-bold text-xl">Dashboard</h2>
+    <div className="flex flex-col bg-green-600 p-6 w-64 text-white">
+      <h1 className="mb-6 font-bold text-white text-xl">Dashboard</h1>
+      <hr className="mb-15" />
       <nav className="flex flex-col gap-4">
         <Link to="/dashboard/jobs" className="hover:text-green-400">
           Jobs
