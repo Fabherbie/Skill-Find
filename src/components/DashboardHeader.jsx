@@ -1,5 +1,10 @@
-import { useState } from "react";
-import { FaUserCircle, FaSignOutAlt, FaBell } from "react-icons/fa";
+import { useState, useEffect, useRef } from "react";
+import {
+  FaUserCircle,
+  FaSignOutAlt,
+  FaBell,
+  FaCreditCard,
+} from "react-icons/fa";
 import {
   FiSettings,
   FiUser,
@@ -13,6 +18,27 @@ const DashboardHeader = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [hasNotifications, setHasNotifications] = useState(true); // Set to true if there are new notifications
+  const settingsRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown if click is outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        settingsRef.current &&
+        !settingsRef.current.contains(event.target)
+      ) {
+        setDropdownOpen(false);
+        setIsSettingsOpen(false); // Close settings dropdown as well
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="flex justify-between items-center bg-white shadow-md p-4">
@@ -28,13 +54,13 @@ const DashboardHeader = () => {
         </div>
 
         {/* Settings Icon */}
-        <div className="relative">
+        <div className="relative" ref={settingsRef}>
           <FiSettings
             className="text-gray-700 text-2xl cursor-pointer"
             onClick={() => setIsSettingsOpen(!isSettingsOpen)}
           />
           {isSettingsOpen && (
-            <div className="right-0 absolute bg-white shadow-lg mt-2 p-2 rounded-lg w-60 text-blue-950">
+            <div className="right-0 absolute bg-white shadow-lg mt-2 p-2 rounded-lg w-72 text-blue-950">
               <button className="flex items-center gap-2 hover:bg-gray-100 px-4 py-2 w-full">
                 <FiImage /> Change Profile Picture
               </button>
@@ -47,16 +73,17 @@ const DashboardHeader = () => {
               <button className="flex items-center gap-2 hover:bg-gray-100 px-4 py-2 w-full">
                 <FiLock /> Update Password
               </button>
-              {/* <hr className="my-1" />
-              <button className="flex items-center gap-2 hover:bg-gray-100 px-4 py-2 w-full text-red-600">
-                <FaSignOutAlt /> Logout
-              </button> */}
+              {/* <hr className="my-1" /> */}
+              {/* Add/Edit Payment Method with Credit Card Icon */}
+              <button className="flex items-center gap-2 hover:bg-gray-100 px-4 py-2 w-full">
+                <FaCreditCard /> Add/Edit Payment Method
+              </button>
             </div>
           )}
         </div>
 
         {/* Profile Dropdown */}
-        <div className="relative">
+        <div className="relative" ref={dropdownRef}>
           <FaUserCircle
             className="text-gray-700 text-2xl cursor-pointer"
             onClick={() => setDropdownOpen(!isDropdownOpen)}
