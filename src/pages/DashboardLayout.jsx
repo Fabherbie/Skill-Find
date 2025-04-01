@@ -1,5 +1,6 @@
 import { Outlet, Routes, Route } from "react-router-dom";
 import DashboardHeader from "../components/DashboardHeader";
+import DashboardFooter from "../components/DashboardFooter";
 import Sidebar from "../components/Sidebar";
 import Jobs from "../pages/Jobs";
 import CustomerDashboard from "../pages/CustomerDashboard";
@@ -26,6 +27,7 @@ const DashboardLayout = () => {
             {/* Payments Page */}
             <Route path="profile" element={<Profile />} />
           </Routes>
+          <DashboardFooter /> {/* Dashboard-specific Footer */}
         </div>
       </div>
     </div>

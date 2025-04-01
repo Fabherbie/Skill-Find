@@ -1,20 +1,67 @@
 import { useState } from "react";
-import jobData from "../data/jobData"; // Import job data
+import jobData from "../data/jobData";
 import {
   FaCheckCircle,
   FaHourglassHalf,
   FaClipboardList,
   FaStar,
-  FaDollarSign,
+  FaFileInvoice,
+  FaMoneyBillWave,
 } from "react-icons/fa";
 import { FaNairaSign } from "react-icons/fa6";
 
 const Jobs = () => {
-  const [jobs] = useState(jobData);
+  const [jobs, setJobs] = useState(jobData);
+
+  // Function to make escrow payment
+  const payEscrow = (jobId) => {
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job.id === jobId
+          ? { ...job, awaitingEscrow: false, status: "In Progress" }
+          : job
+      )
+    );
+  };
+
+  // Function to approve job completion
+  const approveJob = (jobId) => {
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job.id === jobId ? { ...job, status: "Completed", approved: true } : job
+      )
+    );
+  };
 
   return (
     <div className="bg-gray-100 p-6 min-h-screen">
       <h2 className="mb-4 font-bold text-blue-950 text-2xl">Your Jobs</h2>
+
+      {/* Jobs Awaiting Escrow */}
+      <section className="bg-white shadow-md mb-4 p-6 rounded-lg">
+        <h3 className="flex items-center gap-2 font-semibold text-lg">
+          <FaMoneyBillWave className="text-red-500" /> Jobs Awaiting Escrow
+          Payment
+        </h3>
+        {jobs.filter((job) => job.awaitingEscrow).length > 0 ? (
+          jobs
+            .filter((job) => job.awaitingEscrow)
+            .map((job) => (
+              <div key={job.id} className="flex justify-between p-3 border-b">
+                <span>{job.title}</span>
+                <span className="text-gray-500">₦{job.price}</span>
+                <button
+                  className="bg-green-600 px-4 py-2 rounded-lg text-white"
+                  onClick={() => payEscrow(job.id)}
+                >
+                  Pay Escrow
+                </button>
+              </div>
+            ))
+        ) : (
+          <p className="mt-2 text-gray-500">No jobs awaiting escrow payment.</p>
+        )}
+      </section>
 
       {/* Pending Jobs */}
       <section className="bg-white shadow-md mb-4 p-6 rounded-lg">
@@ -47,6 +94,12 @@ const Jobs = () => {
               <div key={job.id} className="flex justify-between p-3 border-b">
                 <span>{job.title}</span>
                 <span className="text-gray-500">₦{job.price}</span>
+                <button
+                  className="bg-blue-600 px-4 py-2 rounded-lg text-white"
+                  onClick={() => approveJob(job.id)}
+                >
+                  Approve Job
+                </button>
               </div>
             ))
         ) : (
@@ -54,7 +107,7 @@ const Jobs = () => {
         )}
       </section>
 
-      {/* Completed Jobs */}
+      {/* Completed Jobs & Invoices */}
       <section className="bg-white shadow-md p-6 rounded-lg">
         <h3 className="flex items-center gap-2 font-semibold text-lg">
           <FaCheckCircle className="text-green-500" /> Finished Jobs
@@ -69,12 +122,19 @@ const Jobs = () => {
                   <span className="text-gray-500">₦{job.price}</span>
                 </div>
                 <div className="flex items-center gap-1 mt-2 text-yellow-500">
-                  {[...Array(Math.round(job.rating))].map((_, i) => (
+                  {[...Array(Math.round(job.rating || 0))].map((_, i) => (
                     <FaStar key={i} />
                   ))}
-                  <span className="text-gray-600">({job.rating} stars)</span>
+                  <span className="text-gray-600">
+                    ({job.rating || "No Rating"} stars)
+                  </span>
                 </div>
-                <p className="text-gray-600 italic">"{job.feedback}"</p>
+                <p className="text-gray-600 italic">
+                  "{job.feedback || "No feedback provided"}"
+                </p>
+                <button className="flex items-center gap-2 bg-gray-700 mt-2 px-4 py-2 rounded-lg text-white">
+                  <FaFileInvoice /> Download Invoice
+                </button>
               </div>
             ))
         ) : (
@@ -82,7 +142,7 @@ const Jobs = () => {
         )}
       </section>
 
-      {/* Earnings Summary */}
+      {/* Total Spent */}
       <section className="bg-white shadow-md mt-4 p-6 rounded-lg">
         <h3 className="flex items-center gap-2 font-semibold text-lg">
           <FaNairaSign className="text-green-700" /> Total Spent on Jobs
