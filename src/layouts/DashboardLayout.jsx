@@ -12,12 +12,14 @@ const DashboardLayout = () => {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <Sidebar />
+      <div className="fixed w-64 h-full">
+        <Sidebar />
+      </div>
 
       {/* Main Content Area */}
-      <div className="flex flex-col flex-grow">
+      <div className="flex flex-col flex-grow ml-64">
         <DashboardHeader /> {/* Dashboard-specific Header */}
-        <div className="p-6">
+        <div className="flex-1 p-6">
           <Routes>
             <Route path="/" element={<CustomerDashboard />} />
             <Route path="jobs" element={<Jobs />} /> {/* Jobs Page */}
@@ -27,8 +29,8 @@ const DashboardLayout = () => {
             {/* Payments Page */}
             <Route path="profile" element={<Profile />} />
           </Routes>
-          <DashboardFooter /> {/* Dashboard-specific Footer */}
         </div>
+        <DashboardFooter /> {/* Dashboard-specific Footer */}
       </div>
     </div>
   );

@@ -8,18 +8,38 @@ import {
 } from "react-icons/fa";
 
 const Sidebar = () => {
-  const location = useLocation();
+  const location = useLocation(); // useLocation must be defined
 
   const links = [
-    { to: "/dashboard", icon: <FaTachometerAlt />, label: "Dashboard" },
-    { to: "/dashboard/jobs", icon: <FaBriefcase />, label: "Jobs" },
-    { to: "/dashboard/messages", icon: <FaEnvelope />, label: "Messages" },
-    { to: "/dashboard/payments", icon: <FaMoneyBillWave />, label: "Payments" },
-    { to: "/dashboard/profile", icon: <FaUser />, label: "Profile" },
+    { 
+      to: "/dashboard", 
+      icon: <FaTachometerAlt />, 
+      label: "Dashboard" 
+    },
+    { 
+      to: "/dashboard/jobs", 
+      icon: <FaBriefcase />, 
+      label: "Jobs" 
+    },
+    { 
+      to: "/dashboard/messages", 
+      icon: <FaEnvelope />, 
+      label: "Messages" 
+    },
+    { 
+      o: "/dashboard/payments", 
+      icon: <FaMoneyBillWave />, 
+      label: "Payments" 
+    },
+    { 
+      to: "/dashboard/profile", 
+      icon: <FaUser />, 
+      label: "Profile" 
+    },
   ];
 
   return (
-    <div className="flex flex-col bg-green-600 p-6 w-64 h-full min-h-screen text-white">
+    <div className="top-0 left-0 fixed flex flex-col bg-green-600 p-6 w-64 h-screen text-white">
       <h1 className="flex items-center gap-2 mb-6 font-bold text-white text-xl">
         <img
           src="../images/Group.svg"

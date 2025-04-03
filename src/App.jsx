@@ -58,9 +58,17 @@ import About from "./pages/About";
 import ServicesPage from "./pages/ServicePage";
 import SignupCustomer from "./pages/SignupCustomer";
 import SignupProvider from "./pages/SignupProvider";
-import DashboardLayout from "./pages/DashboardLayout";
+import DashboardLayout from "./layouts/DashboardLayout";
+import ProviderDashboardLayout from "./layouts/ProviderDashboardLayout";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import ProviderDashboard from "./pages/ProviderDashboard";
+import JobRequests from "./pages/JobRequests";
+import AcceptedJobs from "./pages/AcceptedJobs";
+import CompletedJobs from "./pages/CompletedJobs";
+import Calendar from "./pages/Calendar";
+import Financials from "./pages/Financials";
+import ProviderProfile from "./pages/ProviderProfile";
+import Messages from "./pages/Messages";
 
 function App() {
   return (
@@ -118,10 +126,24 @@ function App() {
           }
         />
 
-        {/* Dashboard Layout (Handles DashboardHeader inside) */}
+        {/* Customer Dashboard */}
         <Route path="/dashboard/*" element={<DashboardLayout />}>
           <Route index element={<CustomerDashboard />} />
-          <Route path="provider" element={<ProviderDashboard />} />
+        </Route>
+
+        {/* Service Provider Dashboard */}
+        <Route
+          path="/provider-dashboard/*"
+          element={<ProviderDashboardLayout />}
+        >
+          <Route index element={<ProviderDashboard />} />
+          <Route path="requests" element={<JobRequests />} />
+          <Route path="accepted" element={<AcceptedJobs />} />
+          <Route path="completed" element={<CompletedJobs />} />
+          <Route path="calendar" element={<Calendar />} />
+          <Route path="financials" element={<Financials />} />
+          <Route path="profile" element={<ProviderProfile />} />
+          <Route path="messages" element={<Messages />} />
         </Route>
       </Routes>
     </Router>
@@ -129,4 +151,3 @@ function App() {
 }
 
 export default App;
-

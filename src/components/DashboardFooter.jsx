@@ -2,9 +2,9 @@ import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 const DashboardFooter = () => {
   return (
-    <footer className="bg-white shadow-md mt-10 py-6 text-gray-700">
-      {/* Container for the footer content */}
-      <div className="flex justify-between items-center mx-auto px-6 w-full container">
+    <footer className="bg-gray-50 py-4 w-full text-gray-700">
+      {/* Footer Content */}
+      <div className="flex justify-between items-center px-6 w-full">
         {/* Brand Logo & Name */}
         <div className="flex items-center gap-2">
           <img
@@ -32,7 +32,7 @@ const DashboardFooter = () => {
         </div>
 
         {/* Copyright Text */}
-        <p className="mt-4 sm:mt-0 text-sm text-center">
+        <p className="text-sm text-center">
           &copy; {new Date().getFullYear()} SkillFind. All rights reserved.
         </p>
       </div>

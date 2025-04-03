@@ -41,7 +41,7 @@ const DashboardHeader = () => {
   }, []);
 
   return (
-    <header className="flex justify-between items-center bg-white shadow-md p-4">
+    <header className="flex justify-between items-center bg-green-50 shadow-md p-4">
       <h1 className="font-bold text-green-700 text-lg">Welcome Back, Juwon!</h1>
 
       <div className="flex items-center gap-4">
