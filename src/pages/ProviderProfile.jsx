@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaPen, FaUpload, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { FaPen, FaUpload, FaCheckCircle, FaCamera } from "react-icons/fa";
 
 const ProviderProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -8,12 +8,12 @@ const ProviderProfile = () => {
     location: "Lagos, Nigeria",
     phone: "+234 801 234 5678",
     rating: 4.7,
-    idNumber: "",
-    bankAccount: "",
-    certifications: [],
-    availability: "Online",
+    availability: "Online", // Availability dropdown between "Online" or "Offline"
     image: "", // Placeholder for profile image
+    reviewStatus: "",
   });
+
+  const [notification, setNotification] = useState("");
 
   const handleEdit = () => setIsEditing(!isEditing);
 
@@ -25,14 +25,6 @@ const ProviderProfile = () => {
     }));
   };
 
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Handle file upload logic (e.g., store file URL, etc.)
-      console.log("File uploaded: ", file);
-    }
-  };
-
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -41,30 +33,48 @@ const ProviderProfile = () => {
     }
   };
 
-  const handleAvailabilityChange = (status) => {
-    setProfile((prevState) => ({
-      ...prevState,
-      availability: status,
-    }));
+  const handleSubmitForReview = () => {
+    setNotification("Your profile is awaiting approval.");
+    // Simulate profile approval after a short delay
+    setTimeout(() => {
+      setNotification("Your profile has been approved.");
+    }, 3000);
   };
 
   return (
-    <div className="container">
-      <h2 className="mb-4 font-bold text-blue-950 text-xl">Profile</h2>
+    <div className="py-4 container">
+      <h2 className="mb-4 font-bold text-blue-950 text-xl">Provider Profile</h2>
 
-      <div className="bg-gray-100 p-6 rounded-lg">
+      {/* Notification */}
+      {notification && (
+        <div className="bg-blue-600 mb-4 p-2 rounded-md text-white">
+          {notification}
+        </div>
+      )}
+
+      <div className="bg-gray-100 px-6 py-4 rounded-lg">
         {/* Profile Info Section */}
-        <div className="flex justify-between mb-4">
+        <div className="flex justify-between items-center mb-4">
           <div className="flex items-center">
-            {/* Profile Image */}
-            <div className="mr-4 border-2 border-green-600 rounded-full w-16 h-16 overflow-hidden">
+            {/* Profile Image with Camera Icon for Image Upload */}
+            <div className="relative w-24 h-24">
               <img
                 src={profile.image || "https://via.placeholder.com/150"}
                 alt="Profile"
-                className="w-full h-full object-cover"
+                className="border border-gray-300 rounded-full w-full h-full object-cover"
               />
+              {/* Camera Icon for Upload */}
+              <label className="right-0 bottom-0 absolute bg-green-600 p-2 rounded-full text-white cursor-pointer">
+                <FaCamera />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </label>
             </div>
-            <div>
+            <div className="pl-4">
               <h3 className="font-semibold text-xl">{profile.name}</h3>
               <p>Location: {profile.location}</p>
               <p>Rating: ⭐ {profile.rating}</p>
@@ -74,7 +84,7 @@ const ProviderProfile = () => {
           </div>
           <button
             onClick={handleEdit}
-            className="flex items-center gap-2 bg-blue-500 px-3 py-1 rounded-md text-white text-sm"
+            className="flex items-center gap-2 bg-blue-500 px-4 py-2 rounded-md text-white text-sm"
           >
             <FaPen /> {isEditing ? "Save Changes" : "Edit Profile"}
           </button>
@@ -140,67 +150,34 @@ const ProviderProfile = () => {
               />
             </div>
 
-            {/* Image Upload Section */}
+            {/* Availability Dropdown */}
             <div className="mb-4">
-              <label className="block font-semibold">Profile Image</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
+              <label className="block font-semibold">Availability</label>
+              <select
+                name="availability"
+                value={profile.availability}
+                onChange={handleChange}
                 className="p-2 border border-green-600 rounded-md w-full"
-              />
-            </div>
-
-            {/* Certifications Upload */}
-            <div className="mb-4">
-              <label className="block font-semibold">
-                Certifications (if any)
-              </label>
-              <div className="flex items-center">
-                <input
-                  type="file"
-                  onChange={handleFileUpload}
-                  className="p-2 border border-green-600 rounded-md w-full"
-                />
-                <FaUpload className="ml-2 text-green-600" />
-              </div>
-            </div>
-
-            {/* Availability Status */}
-            <div className="mb-4">
-              <label className="block font-semibold">Set Availability</label>
-              <div className="flex gap-4">
-                <button
-                  onClick={() => handleAvailabilityChange("Online")}
-                  className={`px-4 py-2 rounded-md ${
-                    profile.availability === "Online"
-                      ? "bg-green-600 text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  Online
-                </button>
-                <button
-                  onClick={() => handleAvailabilityChange("Offline")}
-                  className={`px-4 py-2 rounded-md ${
-                    profile.availability === "Offline"
-                      ? "bg-red-600 text-white"
-                      : "bg-gray-300"
-                  }`}
-                >
-                  Offline
-                </button>
-              </div>
+              >
+                <option value="Online">Online</option>
+                <option value="Offline">Offline</option>
+              </select>
             </div>
           </div>
         )}
 
         {/* Profile Actions */}
-        <div className="mt-4">
-          <button className="bg-blue-600 px-6 py-2 rounded-lg text-white cursor-pointer">
+        <div className="flex gap-4 mt-4">
+          <button
+            onClick={() => alert("Detailed Profile View")}
+            className="bg-blue-600 px-4 py-2 rounded-lg text-white cursor-pointer"
+          >
             View Full Profile
           </button>
-          <button className="bg-green-600 ml-4 px-6 py-2 rounded-lg text-white cursor-pointer">
+          <button
+            onClick={handleSubmitForReview}
+            className="bg-green-600 px-4 py-2 rounded-lg text-white cursor-pointer"
+          >
             Submit Profile for Review
           </button>
         </div>
