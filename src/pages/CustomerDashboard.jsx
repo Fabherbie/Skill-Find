@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import {
   FaPlus,
   FaPaperPlane,
@@ -40,37 +40,40 @@ const CustomerDashboard = () => {
   };
 
   return (
-    <div className="bg-gray-100 p-6 min-h-screen">
-      <h2 className="mb-4 font-bold text-blue-950 text-2xl">Your Dashboard</h2>
+    <div className="bg-gray-100 p-8 min-h-screen">
+      <h2 className="mb-6 font-bold text-blue-950 text-3xl">Your Dashboard</h2>
 
       {/* Post a Job */}
-      <section className="bg-white shadow-md mb-4 p-6 rounded-lg">
-        <h3 className="flex items-center gap-2 font-semibold text-blue-950 text-xl">
+      <section className="bg-white shadow-lg mx-auto mb-6 p-6 rounded-lg w-full max-w-4xl">
+        <h3 className="flex items-center gap-2 mb-4 font-semibold text-blue-950 text-xl">
           <FaPlus className="text-green-600" /> Post a New Job
         </h3>
         <textarea
           value={newJob}
           onChange={(e) => setNewJob(e.target.value)}
           placeholder="Describe the job you need..."
-          className="mt-2 p-3 border rounded-lg w-full text-gray-800"
+          className="mt-2 p-4 border border-green-700 rounded-lg w-full text-gray-800"
         />
         <button
           onClick={postJob}
-          className="flex items-center gap-2 bg-green-600 mt-2 px-4 py-2 rounded-lg text-white"
+          className="flex items-center gap-2 bg-green-600 hover:bg-green-700 mt-4 px-6 py-3 rounded-lg text-white transition duration-300"
         >
           <FaPaperPlane /> Post Job
         </button>
       </section>
 
       {/* Pending Ratings & Reviews */}
-      <section className="bg-white shadow-md mb-4 p-6 rounded-lg">
-        <h3 className="flex items-center gap-2 font-semibold text-blue-950 text-xl">
+      <section className="bg-white shadow-lg mx-auto mb-6 p-6 rounded-lg w-full max-w-4xl">
+        <h3 className="flex items-center gap-2 mb-4 font-semibold text-blue-950 text-xl">
           <FaStar className="text-yellow-500" /> Pending Job Ratings
         </h3>
         {pendingRatings.length > 0 ? (
           pendingRatings.map((job) => (
-            <div key={job.id} className="p-3 border-b">
-              <span className="font-semibold">{job.title}</span>
+            <div
+              key={job.id}
+              className="hover:bg-gray-50 p-4 border-b transition duration-300"
+            >
+              <span className="font-semibold text-gray-800">{job.title}</span>
               <div className="flex gap-1 mt-2">
                 {[...Array(5)].map((_, i) => (
                   <FaStar
@@ -93,11 +96,11 @@ const CustomerDashboard = () => {
                     )
                   )
                 }
-                className="mt-2 p-2 border rounded-lg w-full"
+                className="mt-4 p-3 border border-green-700 rounded-lg w-full text-gray-800"
               />
               <button
                 onClick={() => submitReview(job.id)}
-                className="bg-blue-600 mt-2 px-4 py-2 rounded-lg text-white"
+                className="bg-blue-600 hover:bg-blue-700 mt-4 px-6 py-3 rounded-lg text-white transition duration-300"
               >
                 Submit Review
               </button>
@@ -110,13 +113,37 @@ const CustomerDashboard = () => {
 
       {/* Messages - Clickable Link */}
       <Link to="/dashboard/messages">
-        <section className="bg-white hover:bg-gray-50 shadow-md p-6 rounded-lg transition cursor-pointer">
-          <h3 className="flex items-center gap-2 font-semibold text-blue-950 text-xl">
+        <section className="bg-white hover:bg-gray-50 shadow-lg mx-auto mb-6 p-6 rounded-lg w-full max-w-4xl transition duration-300 cursor-pointer">
+          <h3 className="flex items-center gap-2 mb-2 font-semibold text-blue-950 text-xl">
             <FaRegCommentDots className="text-blue-600" /> Recent Messages
           </h3>
           <p className="text-gray-800">You have 2 new messages.</p>
         </section>
       </Link>
+
+      <section className="bg-white shadow-lg mx-auto mb-6 p-6 rounded-lg w-full max-w-4xl">
+        <h3 className="flex items-center gap-2 mb-4 font-semibold text-blue-950 text-xl">
+          <FaClipboardList className="text-green-700" /> Quick Links
+        </h3>
+        <ul className="space-y-3">
+          <li>
+            <Link
+              to="/dashboard/jobs"
+              className="text-green-600 hover:underline"
+            >
+              View Your Jobs
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dashboard/profile"
+              className="text-green-600 hover:underline"
+            >
+              Account Settings
+            </Link>
+          </li>
+        </ul>
+      </section>
     </div>
   );
 };

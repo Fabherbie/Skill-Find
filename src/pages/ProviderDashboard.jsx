@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import DashboardHeader from "../components/DashboardHeader";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import BrandSpinner from "../components/BrandSpinner";
 import jobRequests from "../data/jobRequests";
 import EarningsChart from "../components/EarningsChart";
 import earningsData from "../data/earningsData";
@@ -14,16 +15,26 @@ import {
   FaBriefcase,
 } from "react-icons/fa";
 
-<EarningsChart earningsData={earningsData} />;
-
 const ProviderDashboard = () => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
+  const [loading, setLoading] = useState(true);
 
   const availableBalance = 2345;
   const totalEarnings = 150000;
   const escrowBalance = 35000;
   const newJobs = 5;
+
+  // ✅ FIXED: Add missing closing bracket to useEffect
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  // ✅ FIXED: Show spinner if still loading
+  if (loading) return <BrandSpinner />;
 
   return (
     <div className="flex min-h-screen">

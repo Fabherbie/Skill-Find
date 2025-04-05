@@ -11,30 +11,30 @@ const Sidebar = () => {
   const location = useLocation(); // useLocation must be defined
 
   const links = [
-    { 
-      to: "/dashboard", 
-      icon: <FaTachometerAlt />, 
-      label: "Dashboard" 
+    {
+      to: "/dashboard",
+      icon: <FaTachometerAlt />,
+      label: "Dashboard",
     },
-    { 
-      to: "/dashboard/jobs", 
-      icon: <FaBriefcase />, 
-      label: "Jobs" 
+    {
+      to: "/dashboard/jobs",
+      icon: <FaBriefcase />,
+      label: "Jobs",
     },
-    { 
-      to: "/dashboard/messages", 
-      icon: <FaEnvelope />, 
-      label: "Messages" 
+    {
+      to: "/dashboard/messages",
+      icon: <FaEnvelope />,
+      label: "Messages",
     },
-    { 
-      o: "/dashboard/payments", 
-      icon: <FaMoneyBillWave />, 
-      label: "Payments" 
+    {
+      to: "/dashboard/payments",
+      icon: <FaMoneyBillWave />,
+      label: "Payments",
     },
-    { 
-      to: "/dashboard/profile", 
-      icon: <FaUser />, 
-      label: "Profile" 
+    {
+      to: "/dashboard/profile",
+      icon: <FaUser />,
+      label: "Profile",
     },
   ];
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { jobRequests } from "../data/jobRequests";
 import { FaCheck, FaTimes } from "react-icons/fa";
+import BrandSpinner from "../components/BrandSpinner";
 
 const JobRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -37,11 +38,7 @@ const JobRequests = () => {
 
       {/* Loading Spinner (Pulsing Dot) */}
       {isLoading ? (
-        <div className="flex justify-center space-x-2 mb-6">
-          <div className="bg-blue-500 rounded-full w-4 h-4 animate-pulse"></div>
-          <div className="bg-blue-500 rounded-full w-4 h-4 animate-pulse delay-200"></div>
-          <div className="bg-blue-500 rounded-full w-4 h-4 animate-pulse delay-400"></div>
-        </div>
+        <BrandSpinner />
       ) : requests.length === 0 ? (
         <p className="text-gray-600">No job requests at the moment.</p>
       ) : (
