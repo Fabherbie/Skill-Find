@@ -67,25 +67,28 @@ const Messages = () => {
   };
 
   return (
-    <div>
-      <h2 className="mb-4 font-bold text-blue-950 text-2xl">Messages</h2>
+    <div className="bg-gray-100 p-6 min-h-screen">
+      <h2 className="mb-6 font-semibold text-blue-900 text-3xl">Messages</h2>
 
+      {/* List of Messages */}
       {!selectedMessage ? (
         <div>
           {messages.length === 0 ? (
-            <p>No new messages.</p>
+            <p className="text-gray-500 text-lg text-center">
+              No new messages.
+            </p>
           ) : (
-            <div className="flex flex-col space-y-4">
+            <div className="space-y-4">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
-                  className="bg-white shadow-md hover:shadow-xl p-4 rounded-lg transition-all cursor-pointer"
+                  className="bg-white hover:bg-blue-50 shadow-lg hover:shadow-xl p-4 rounded-lg transition-all cursor-pointer"
                   onClick={() => handleMessageClick(msg.id)}
                 >
-                  <h3 className="font-semibold text-blue-950 text-lg">
+                  <h3 className="font-semibold text-blue-900 text-lg">
                     {msg.artisanName}
                   </h3>
-                  <p className="text-gray-800">{msg.messageSnippet}</p>
+                  <p className="text-gray-700">{msg.messageSnippet}</p>
                   <small className="text-gray-500 text-sm">
                     {new Date(msg.timestamp).toLocaleString()}
                   </small>
@@ -96,12 +99,12 @@ const Messages = () => {
         </div>
       ) : (
         <div>
-          <h3 className="mb-4 font-bold text-xl">
+          <h3 className="mb-6 font-semibold text-gray-600 text-xl">
             Conversation with {selectedMessage.artisanName}
           </h3>
 
           {/* Chat Messages */}
-          <div className="space-y-4 bg-white shadow-lg p-6 rounded-lg">
+          <div className="space-y-4 bg-white shadow-lg p-6 rounded-lg max-h-96 overflow-y-auto">
             {selectedMessage.fullConversation.map((msg, index) => (
               <div
                 key={index}
@@ -137,7 +140,9 @@ const Messages = () => {
                 </div>
               </div>
             ))}
-            {typing && <p className="text-gray-500">Artisan is typing...</p>}
+            {typing && (
+              <p className="text-gray-500 text-sm">Artisan is typing...</p>
+            )}
           </div>
 
           {/* Message Input */}
@@ -197,6 +202,8 @@ const Messages = () => {
               Send
             </button>
           </div>
+
+          {/* Back Button */}
           <button
             onClick={() => setSelectedMessage(null)}
             className="bg-blue-500 mt-4 px-4 py-2 rounded text-white"

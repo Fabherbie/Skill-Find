@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from "react";
+import DarkModeToggle from "../components/DarkModeToggle";
+import NotificationDropdown from "../components/NotificationDropdown";
 import {
   FaUserCircle,
   FaSignOutAlt,
@@ -15,22 +17,31 @@ import {
 } from "react-icons/fi";
 
 const DashboardHeader = () => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] =
+    useState(false); // Separate state for notification dropdown
+  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false); // Separate state for profile dropdown
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [hasNotifications, setHasNotifications] = useState(true); // Set to true if there are new notifications
-  const settingsRef = useRef(null);
-  const dropdownRef = useRef(null);
+  const [darkMode, setDarkMode] = useState(false); // Dark mode state
 
-  // Close dropdown if click is outside
+  // Close dropdowns if click is outside
+  const settingsRef = useRef(null);
+  const notificationDropdownRef = useRef(null);
+  const profileDropdownRef = useRef(null);
+
   useEffect(() => {
     const handleClickOutside = (event) => {
+      // Close the dropdowns if the click is outside of them
       if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
+        notificationDropdownRef.current &&
+        !notificationDropdownRef.current.contains(event.target) &&
+        profileDropdownRef.current &&
+        !profileDropdownRef.current.contains(event.target) &&
         settingsRef.current &&
         !settingsRef.current.contains(event.target)
       ) {
-        setDropdownOpen(false);
+        setIsNotificationDropdownOpen(false);
+        setIsProfileDropdownOpen(false); // Close both dropdowns
         setIsSettingsOpen(false); // Close settings dropdown as well
       }
     };
@@ -40,17 +51,40 @@ const DashboardHeader = () => {
     };
   }, []);
 
+  // Toggle dark mode class on the <body> tag
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [darkMode]);
+
   return (
-    <header className="flex justify-between items-center bg-green-50 shadow-md p-4">
-      <h1 className="font-bold text-green-700 text-lg">Welcome Back, Juwon!</h1>
+    <header className="flex justify-between items-center bg-green-50 dark:bg-gray-900 shadow-md p-4">
+      <h1 className="font-bold text-green-700 dark:text-white text-xl">
+        Welcome Back, Juwon!
+      </h1>
 
       <div className="flex items-center gap-4">
         {/* Notifications Icon */}
-        <div className="relative cursor-pointer">
-          <FaBell className="text-gray-700 text-xl" />
+        <div className="relative cursor-pointer" ref={notificationDropdownRef}>
+          <FaBell
+            className="text-gray-700 text-xl"
+            onClick={() =>
+              setIsNotificationDropdownOpen(!isNotificationDropdownOpen)
+            }
+          />
           {hasNotifications && (
             <span className="top-0 right-0 absolute bg-red-500 rounded-full w-2 h-2"></span>
           )}
+          {isNotificationDropdownOpen && <NotificationDropdown />}{" "}
+          {/* Only render when dropdown is open */}
+        </div>
+
+        {/* Dark Mode Toggle */}
+        <div>
+          <DarkModeToggle darkMode={darkMode} setDarkMode={setDarkMode} />
         </div>
 
         {/* Settings Icon */}
@@ -73,8 +107,6 @@ const DashboardHeader = () => {
               <button className="flex items-center gap-2 hover:bg-gray-100 px-4 py-2 w-full">
                 <FiLock /> Update Password
               </button>
-              {/* <hr className="my-1" /> */}
-              {/* Add/Edit Payment Method with Credit Card Icon */}
               <button className="flex items-center gap-2 hover:bg-gray-100 px-4 py-2 w-full">
                 <FaCreditCard /> Add/Edit Payment Method
               </button>
@@ -83,12 +115,12 @@ const DashboardHeader = () => {
         </div>
 
         {/* Profile Dropdown */}
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative" ref={profileDropdownRef}>
           <FaUserCircle
             className="text-gray-700 text-2xl cursor-pointer"
-            onClick={() => setDropdownOpen(!isDropdownOpen)}
+            onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
           />
-          {isDropdownOpen && (
+          {isProfileDropdownOpen && (
             <div className="right-0 absolute bg-white shadow-lg mt-2 p-3 rounded-md w-60">
               <div className="flex items-center gap-2 p-2 border-b">
                 <span className="bg-green-500 rounded-full w-2 h-2"></span>

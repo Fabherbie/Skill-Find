@@ -4,13 +4,13 @@ import { Outlet, Routes, Route } from "react-router-dom";
 import DashboardHeader from "../components/DashboardHeader";
 import DashboardFooter from "../components/DashboardFooter";
 import ProviderSidebar from "../components/ProviderSidebar";
-import JobRequests from "../pages/JobRequests";
-import AcceptedJobs from "../pages/AcceptedJobs";
-import CompletedJobs from "../pages/CompletedJobs";
-import Calendar from "../pages/Calendar";
-import Financials from "../pages/Financials";
-import ProviderProfile from "../pages/ProviderProfile";
-import Messages from "../pages/Messages";
+// import JobRequests from "../pages/JobRequests";
+// import AcceptedJobs from "../pages/AcceptedJobs";
+// import CompletedJobs from "../pages/CompletedJobs";
+// import Calendar from "../pages/Calendar";
+// import Financials from "../pages/Financials";
+// import ProviderProfile from "../pages/ProviderProfile";
+// import Messages from "../pages/Messages";
 
 const ProviderDashboardLayout = () => {
   return (

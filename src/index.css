@@ -1,1 +1,16 @@
 @import "tailwindcss";
+@keyframes sparkle {
+  0% {
+    text-shadow: 0 0 2px gold, 0 0 4px gold;
+  }
+  50% {
+    text-shadow: 0 0 6px gold, 0 0 12px orange;
+  }
+  100% {
+    text-shadow: 0 0 2px gold, 0 0 4px gold;
+  }
+}
+
+.sparkle:hover {
+  animation: sparkle 0.6s ease-in-out;
+}

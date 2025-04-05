@@ -1,27 +1,90 @@
 import React, { useState } from "react";
-import { FaPen, FaUpload, FaCheckCircle, FaCamera } from "react-icons/fa";
+import {
+  FaPen,
+  FaUpload,
+  FaCamera,
+  FaPlus,
+  FaWhatsapp,
+  FaInstagram,
+  FaLinkedin,
+  FaCalendarAlt,
+} from "react-icons/fa";
 
 const ProviderProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
+  const [newTestimonial, setNewTestimonial] = useState({
+    name: "",
+    comment: "",
+  });
+  const [newBooking, setNewBooking] = useState("");
+  const [showBookingModal, setShowBookingModal] = useState(false);
+
   const [profile, setProfile] = useState({
     name: "John Olanrewaju Plumbing",
     location: "Lagos, Nigeria",
     phone: "+234 801 234 5678",
     rating: 4.7,
-    availability: "Online", // Availability dropdown between "Online" or "Offline"
-    image: "", // Placeholder for profile image
-    reviewStatus: "",
+    availability: "Online",
+    image: "",
+    idNumber: "",
+    bankAccount: "",
+    bio: "Experienced plumbing professional specializing in residential and commercial projects.",
+    services:
+      "Pipe repairs, Leak detection, Drain cleaning, Water heater installation",
+    portfolio: [
+      {
+        src: "https://img.freepik.com/free-photo/male-plumber-working-fix-problems-client-s-house_23-2150990698.jpg",
+        caption: "Bathroom renovation",
+      },
+      {
+        src: "https://img.freepik.com/free-photo/plumber-man-fixing-kitchen-sink_53876-27.jpg",
+        caption: "Pipe fitting",
+      },
+    ],
+    videos: [
+      {
+        src: "https://videocdn.cdnpk.net/videos/0ca95a5e-bd14-464d-94a8-f6253813a36f/horizontal/previews/watermarked/small.mp4",
+        caption: "Water heater setup",
+      },
+    ],
+    testimonials: [
+      {
+        name: "Alice Johnson",
+        comment: "Great service, very professional!",
+        rating: 5,
+      },
+      {
+        name: "Mike Ade",
+        comment: "Fixed my leaking pipes in no time!",
+        rating: 4,
+      },
+    ],
+
+    certifications: [],
+    socialLinks: {
+      whatsapp: "https://wa.me/2348012345678",
+      instagram: "https://instagram.com/yourhandle",
+      linkedin: "https://linkedin.com/in/yourprofile",
+    },
+    bookings: ["Mon-Fri: 9am - 5pm", "Sat: 10am - 2pm"],
   });
-
-  const [notification, setNotification] = useState("");
-
-  const handleEdit = () => setIsEditing(!isEditing);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProfile((prevState) => ({
-      ...prevState,
+    setProfile((prev) => ({
+      ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleSocialChange = (e) => {
+    const { name, value } = e.target;
+    setProfile((prev) => ({
+      ...prev,
+      socialLinks: {
+        ...prev.socialLinks,
+        [name]: value,
+      },
     }));
   };
 
@@ -29,41 +92,89 @@ const ProviderProfile = () => {
     const file = e.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      setProfile((prevState) => ({ ...prevState, image: imageUrl }));
+      setProfile((prev) => ({
+        ...prev,
+        image: imageUrl,
+      }));
     }
   };
 
-  const handleSubmitForReview = () => {
-    setNotification("Your profile is awaiting approval.");
-    // Simulate profile approval after a short delay
-    setTimeout(() => {
-      setNotification("Your profile has been approved.");
-    }, 3000);
+  const handlePortfolioUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const newItems = files.map((file) => ({
+      src: URL.createObjectURL(file),
+      caption: "New upload",
+    }));
+    setProfile((prev) => ({
+      ...prev,
+      portfolio: [...prev.portfolio, ...newItems],
+    }));
+  };
+
+  const handleVideoUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const newVideos = files.map((file) => ({
+      src: URL.createObjectURL(file),
+      caption: "New video",
+    }));
+    setProfile((prev) => ({
+      ...prev,
+      videos: [...prev.videos, ...newVideos],
+    }));
+  };
+
+  const handleCertificationUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const certUrl = URL.createObjectURL(file);
+      setProfile((prev) => ({
+        ...prev,
+        certifications: [...prev.certifications, certUrl],
+      }));
+    }
+  };
+
+  const handleAddTestimonial = () => {
+    const { name, comment, rating } = newTestimonial;
+    if (!name || !comment || rating < 1) return;
+
+    setProfile((prev) => ({
+      ...prev,
+      testimonials: [...prev.testimonials, newTestimonial],
+    }));
+
+    setNewTestimonial({ name: "", comment: "", rating: 0 });
+
+    setNewTestimonial({ name: "", comment: "", rating: 0 });
+  };
+
+  const handleAddBooking = () => {
+    if (!newBooking) return;
+    setProfile((prev) => ({
+      ...prev,
+      bookings: [...prev.bookings, newBooking],
+    }));
+    setNewBooking("");
+    setShowBookingModal(false);
   };
 
   return (
-    <div className="py-4 container">
-      <h2 className="mb-4 font-bold text-blue-950 text-xl">Provider Profile</h2>
+    <div className="py-6 container">
+      <h2 className="mb-4 font-bold text-blue-950 text-2xl">My Profile</h2>
 
-      {/* Notification */}
-      {notification && (
-        <div className="bg-blue-600 mb-4 p-2 rounded-md text-white">
-          {notification}
-        </div>
-      )}
-
-      <div className="bg-gray-100 px-6 py-4 rounded-lg">
-        {/* Profile Info Section */}
-        <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center">
-            {/* Profile Image with Camera Icon for Image Upload */}
+      {/* Profile Card */}
+      <div className="bg-gray-100 p-6 rounded-lg">
+        <div className="flex justify-between items-start">
+          <div className="flex gap-6">
             <div className="relative w-24 h-24">
               <img
-                src={profile.image || "https://via.placeholder.com/150"}
+                src={
+                  profile.image ||
+                  "https://img.freepik.com/free-photo/young-african-american-builder-man-wearing-construction-uniform-safety-helmet-pointing-with-palm-hand-with-smile-standing_141793-19010.jpg"
+                }
                 alt="Profile"
-                className="border border-gray-300 rounded-full w-full h-full object-cover"
+                className="border rounded-full w-full h-full object-cover"
               />
-              {/* Camera Icon for Upload */}
               <label className="right-0 bottom-0 absolute bg-green-600 p-2 rounded-full text-white cursor-pointer">
                 <FaCamera />
                 <input
@@ -74,114 +185,307 @@ const ProviderProfile = () => {
                 />
               </label>
             </div>
-            <div className="pl-4">
-              <h3 className="font-semibold text-xl">{profile.name}</h3>
-              <p>Location: {profile.location}</p>
-              <p>Rating: ⭐ {profile.rating}</p>
-              <p>Phone: {profile.phone}</p>
-              <p>Availability: {profile.availability}</p>
+            <div>
+              <h3 className="font-semibold text-blue-950 text-xl">
+                {profile.name}
+              </h3>
+              <p className="mb-1">{profile.bio}</p>
+              <p className="text-gray-700 text-sm">
+                Location: {profile.location}
+              </p>
+              <p className="text-gray-700 text-sm">
+                Services: {profile.services}
+              </p>
+              <p className="text-gray-700 text-sm">
+                Rating: ⭐ {profile.rating}
+              </p>
             </div>
           </div>
           <button
-            onClick={handleEdit}
-            className="flex items-center gap-2 bg-blue-500 px-4 py-2 rounded-md text-white text-sm"
+            className="flex items-center gap-2 text-green-700 hover:underline cursor-pointer"
+            onClick={() => setIsEditing(!isEditing)}
           >
-            <FaPen /> {isEditing ? "Save Changes" : "Edit Profile"}
+            <FaPen /> {isEditing ? "Cancel Edit" : "Edit Profile"}
           </button>
         </div>
 
-        {/* Editable Form Section */}
         {isEditing && (
-          <div className="mt-6">
-            <div className="mb-4">
-              <label className="block font-semibold">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={profile.name}
+          <div className="space-y-4 mt-4">
+            <div>
+              <label className="block font-medium text-blue-950">Bio</label>
+              <textarea
+                name="bio"
+                value={profile.bio}
                 onChange={handleChange}
-                className="p-2 border border-green-600 rounded-md w-full"
+                className="p-2 border border-green-700 rounded-lg w-full"
+                placeholder="Edit your bio"
               />
             </div>
-
-            <div className="mb-4">
-              <label className="block font-semibold">Phone</label>
-              <input
-                type="text"
-                name="phone"
-                value={profile.phone}
-                onChange={handleChange}
-                className="p-2 border border-green-600 rounded-md w-full"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block font-semibold">Location</label>
-              <input
-                type="text"
-                name="location"
-                value={profile.location}
-                onChange={handleChange}
-                className="p-2 border border-green-600 rounded-md w-full"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block font-semibold">
-                Bank Account Details
+            <div>
+              <label className="block font-medium text-blue-950">
+                Services
               </label>
-              <input
-                type="text"
-                name="bankAccount"
-                value={profile.bankAccount}
+              <textarea
+                name="services"
+                value={profile.services}
                 onChange={handleChange}
-                className="p-2 border border-green-600 rounded-md w-full"
+                className="p-2 border border-green-700 rounded-lg w-full"
+                placeholder="Edit your services"
               />
             </div>
 
-            <div className="mb-4">
-              <label className="block font-semibold">Identity Number</label>
-              <input
-                type="text"
-                name="idNumber"
-                value={profile.idNumber}
-                onChange={handleChange}
-                className="p-2 border border-green-600 rounded-md w-full"
-              />
-            </div>
+            {["whatsapp", "instagram", "linkedin"].map((platform) => (
+              <div key={platform}>
+                <label className="block font-medium text-blue-950">
+                  {platform.charAt(0).toUpperCase() + platform.slice(1)}
+                </label>
+                <input
+                  name={platform}
+                  value={profile.socialLinks[platform]}
+                  onChange={handleSocialChange}
+                  placeholder={`${platform} link`}
+                  className="p-2 border border-green-700 rounded-lg w-full"
+                />
+              </div>
+            ))}
 
-            {/* Availability Dropdown */}
-            <div className="mb-4">
-              <label className="block font-semibold">Availability</label>
-              <select
-                name="availability"
-                value={profile.availability}
-                onChange={handleChange}
-                className="p-2 border border-green-600 rounded-md w-full"
-              >
-                <option value="Online">Online</option>
-                <option value="Offline">Offline</option>
-              </select>
-            </div>
+            <button
+              onClick={() => setIsEditing(false)}
+              className="bg-green-700 px-4 py-2 rounded-lg text-white"
+            >
+              Save Changes
+            </button>
           </div>
         )}
 
-        {/* Profile Actions */}
+        {/* Social Links */}
         <div className="flex gap-4 mt-4">
+          {profile.socialLinks.whatsapp && (
+            <a
+              href={profile.socialLinks.whatsapp}
+              className="text-green-600"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaWhatsapp size={24} />
+            </a>
+          )}
+          {profile.socialLinks.instagram && (
+            <a
+              href={profile.socialLinks.instagram}
+              className="text-pink-600"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaInstagram size={24} />
+            </a>
+          )}
+          {profile.socialLinks.linkedin && (
+            <a
+              href={profile.socialLinks.linkedin}
+              className="text-blue-700"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FaLinkedin size={24} />
+            </a>
+          )}
+        </div>
+      </div>
+
+      {/* Portfolio Section */}
+      <div className="bg-white shadow mt-6 p-6 rounded-lg">
+        <h3 className="mb-4 font-semibold text-lg">Portfolio</h3>
+        <div className="gap-4 grid grid-cols-2 md:grid-cols-4">
+          {profile.portfolio.map((item, index) => (
+            <div key={index}>
+              <img
+                src={item.src}
+                alt="work"
+                className="rounded w-full h-32 object-cover"
+              />
+              <p className="mt-1 text-gray-600 text-xs">{item.caption}</p>
+            </div>
+          ))}
+          <label className="flex justify-center items-center bg-gray-200 rounded h-32 cursor-pointer">
+            <FaPlus />
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handlePortfolioUpload}
+              className="hidden"
+            />
+          </label>
+        </div>
+
+        {/* Videos */}
+        <div className="mt-6">
+          <h4 className="mb-2 font-medium">Videos</h4>
+          <div className="gap-4 grid grid-cols-2">
+            {profile.videos.map((vid, i) => (
+              <div key={i}>
+                <video
+                  controls
+                  src={vid.src}
+                  className="rounded w-full h-32 object-cover"
+                />
+                <p className="text-gray-500 text-xs">{vid.caption}</p>
+              </div>
+            ))}
+            <label className="flex justify-center items-center bg-gray-200 rounded h-32 text-center cursor-pointer">
+              <FaUpload />
+              <input
+                type="file"
+                multiple
+                accept="video/*"
+                onChange={handleVideoUpload}
+                className="hidden"
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      {/* Testimonials */}
+      <div className="bg-white shadow mt-6 p-6 rounded-lg">
+        <h3 className="mb-2 font-semibold text-blue-950 text-lg">
+          Customer Testimonials
+        </h3>
+        {profile.testimonials.map((review, index) => (
+          <div key={index} className="mb-3">
+            <p className="italic">
+              “{review.comment}” - {review.name}
+            </p>
+            <p className="text-yellow-500">
+              {Array.from({ length: review.rating }, (_, i) => (
+                <span key={i}>⭐</span>
+              ))}
+            </p>
+          </div>
+        ))}
+
+        <div className="mt-4">
+          <h4 className="mb-2 font-medium text-blue-950">Add a Testimonial</h4>
+          <input
+            type="text"
+            placeholder="Customer Name"
+            className="mb-2 p-2 border border-green-700 rounded-lg w-full"
+            value={newTestimonial.name}
+            onChange={(e) =>
+              setNewTestimonial({ ...newTestimonial, name: e.target.value })
+            }
+          />
+          <textarea
+            placeholder="Comment"
+            className="p-2 border border-green-700 rounded-lg w-full"
+            value={newTestimonial.comment}
+            onChange={(e) =>
+              setNewTestimonial({ ...newTestimonial, comment: e.target.value })
+            }
+          />
+          <label className="block mt-2 font-medium text-blue-950 text-sm">
+            Rating
+          </label>
+          <div className="flex items-center space-x-1 mt-2">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <span
+                key={star}
+                className={`text-2xl cursor-pointer transition-all duration-200 ease-in-out transform hover:scale-125 ${
+                  newTestimonial.rating >= star
+                    ? "text-yellow-500 sparkle"
+                    : "text-gray-300"
+                }`}
+                onClick={() =>
+                  setNewTestimonial({ ...newTestimonial, rating: star })
+                }
+              >
+                ★
+              </span>
+            ))}
+          </div>
+
           <button
-            onClick={() => alert("Detailed Profile View")}
-            className="bg-blue-600 px-4 py-2 rounded-lg text-white cursor-pointer"
+            onClick={handleAddTestimonial}
+            className="bg-green-600 hover:bg-green-500 mt-2 px-4 py-2 rounded-lg text-white cursor-pointer"
           >
-            View Full Profile
-          </button>
-          <button
-            onClick={handleSubmitForReview}
-            className="bg-green-600 px-4 py-2 rounded-lg text-white cursor-pointer"
-          >
-            Submit Profile for Review
+            Add Testimonial
           </button>
         </div>
       </div>
+
+      {/* Certifications */}
+      <div className="bg-white shadow mt-6 p-6 rounded-lg">
+        <h3 className="mb-2 font-semibold text-blue-950 text-lg">
+          Badges & Certifications
+        </h3>
+        <div className="flex flex-wrap gap-4">
+          {profile.certifications.map((cert, i) => (
+            <img
+              key={i}
+              src={cert}
+              className="border rounded w-24 h-24 object-cover"
+            />
+          ))}
+          <label className="flex items-center gap-2 text-green-700 hover:text-green-500 cursor-pointer">
+            <FaUpload /> Upload Certification
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleCertificationUpload}
+              className="hidden"
+            />
+          </label>
+        </div>
+      </div>
+
+      {/* Booking Availability */}
+      <div className="bg-white shadow mt-6 p-6 rounded-lg">
+        <h3 className="flex items-center gap-2 mb-2 font-semibold text-blue-950 text-lg">
+          <FaCalendarAlt /> Booking Availability
+        </h3>
+        <ul className="ml-6 text-gray-700 list-disc">
+          {profile.bookings.map((slot, index) => (
+            <li key={index}>{slot}</li>
+          ))}
+        </ul>
+        <button
+          onClick={() => setShowBookingModal(true)}
+          className="bg-green-600 hover:bg-green-500 mt-4 px-4 py-2 rounded-lg text-white cursor-pointer"
+        >
+          + Add Booking Slot
+        </button>
+      </div>
+
+      {/* Booking Modal */}
+      {showBookingModal && (
+        <div className="z-50 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-white shadow p-6 rounded-lg w-96">
+            <h4 className="mb-4 font-semibold">Add Booking Time</h4>
+            <input
+              type="text"
+              placeholder="e.g. Sun: 2pm - 6pm"
+              className="p-2 border w-full"
+              value={newBooking}
+              onChange={(e) => setNewBooking(e.target.value)}
+            />
+            <div className="flex justify-end gap-2 mt-4">
+              <button
+                onClick={() => setShowBookingModal(false)}
+                className="bg-gray-400 px-4 py-1 rounded text-white"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAddBooking}
+                className="bg-green-700 px-4 py-1 rounded text-white"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
