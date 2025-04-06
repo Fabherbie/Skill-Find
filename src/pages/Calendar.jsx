@@ -2,7 +2,34 @@ import React, { useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Button, Modal, Input, Select } from "antd";
+import { Button, Modal, Input, Select, message } from "antd";
+
+// Custom Toolbar Component
+const CustomToolbar = ({ date, onNavigate }) => {
+  const goToBack = () => {
+    onNavigate("PREV");
+  };
+
+  const goToNext = () => {
+    onNavigate("NEXT");
+  };
+
+  const label = () => {
+    return moment(date).format("MMMM YYYY");
+  };
+
+  return (
+    <div className="flex justify-between items-center mb-4">
+      <Button onClick={goToBack} className="bg-green-600 rounded-lg text-white">
+        Prev
+      </Button>
+      <span className="font-semibold text-xl">{label()}</span>
+      <Button onClick={goToNext} className="bg-green-600 rounded-lg text-white">
+        Next
+      </Button>
+    </div>
+  );
+};
 
 const localizer = momentLocalizer(moment);
 
@@ -30,8 +57,8 @@ const ProviderCalendar = () => {
     end: null,
     status: "Pending",
   });
-
   const [view, setView] = useState("day");
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   // Handle slot selection (for adding new events)
   const handleSelectSlot = ({ start, end }) => {
@@ -47,6 +74,10 @@ const ProviderCalendar = () => {
 
   // Handle adding a new event
   const handleAddEvent = () => {
+    if (!newEvent.title || !newEvent.start || !newEvent.end) {
+      message.error("Please fill in all fields.");
+      return;
+    }
     setEvents([...events, newEvent]);
     setModalVisible(false);
   };
@@ -60,9 +91,22 @@ const ProviderCalendar = () => {
     setModalVisible(false);
   };
 
+  const handleNavigate = (action) => {
+    let newDate = new Date(currentDate);
+    if (action === "NEXT") {
+      newDate.setMonth(newDate.getMonth() + 1);
+    } else if (action === "PREV") {
+      newDate.setMonth(newDate.getMonth() - 1);
+    }
+    setCurrentDate(newDate);
+  };
+
   return (
     <div className="bg-white shadow-md p-6 rounded-md">
       <h2 className="mb-4 font-bold text-blue-950 text-xl">Job Calendar</h2>
+
+      {/* Custom Toolbar */}
+      <CustomToolbar date={currentDate} onNavigate={handleNavigate} />
 
       {/* View Toggle */}
       <div className="mb-4">
@@ -84,7 +128,7 @@ const ProviderCalendar = () => {
         views={["month", "week", "day"]}
         view={view}
         onView={(newView) => setView(newView)}
-        defaultDate={new Date()}
+        defaultDate={currentDate}
       />
 
       {/* Modal for Adding or Editing Events */}
