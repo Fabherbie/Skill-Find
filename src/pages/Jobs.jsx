@@ -35,11 +35,11 @@ const Jobs = () => {
   };
 
   return (
-    <div className="flex flex-col items-center bg-gray-100 p-6 min-h-screen">
-      <h2 className="mb-6 font-bold text-blue-950 text-3xl">Your Jobs</h2>
+    <div className="flex flex-col justify-start bg-gray-100 mb-4 p-6 min-h-screen">
+      <h2 className="mb-6 font-semibold text-blue-950 text-3xl">Your Jobs</h2>
 
       {/* Job Statistics */}
-      <section className="bg-white shadow-lg mb-6 p-6 rounded-lg w-full max-w-4xl">
+      <section className="bg-white shadow-lg mb-6 p-6 rounded-lg w-full">
         <h3 className="mb-4 font-semibold text-blue-950 text-xl">
           Job Statistics
         </h3>
@@ -61,7 +61,7 @@ const Jobs = () => {
       </section>
 
       {/* Jobs Awaiting Escrow */}
-      <section className="bg-white shadow-lg mb-6 p-6 rounded-lg w-full max-w-4xl">
+      <section className="bg-white shadow-lg mb-6 p-6 rounded-lg w-full">
         <h3 className="flex items-center gap-2 font-semibold text-red-500 text-lg">
           <FaMoneyBillWave /> Jobs Awaiting Escrow Payment
         </h3>
@@ -89,7 +89,7 @@ const Jobs = () => {
       </section>
 
       {/* Pending Jobs */}
-      <section className="bg-white shadow-lg mb-6 p-6 rounded-lg w-full max-w-4xl">
+      <section className="bg-white shadow-lg mb-6 p-6 rounded-lg w-full">
         <h3 className="flex items-center gap-2 font-semibold text-yellow-500 text-lg">
           <FaHourglassHalf /> Pending Job Requests
         </h3>
@@ -111,7 +111,7 @@ const Jobs = () => {
       </section>
 
       {/* Jobs In Progress */}
-      <section className="bg-white shadow-lg mb-6 p-6 rounded-lg w-full max-w-4xl">
+      <section className="bg-white shadow-lg mb-6 p-6 rounded-lg w-full">
         <h3 className="flex items-center gap-2 font-semibold text-blue-500 text-lg">
           <FaClipboardList /> Jobs In Progress
         </h3>
@@ -139,7 +139,7 @@ const Jobs = () => {
       </section>
 
       {/* Completed Jobs & Invoices */}
-      <section className="bg-white shadow-lg mb-6 p-6 rounded-lg w-full max-w-4xl">
+      <section className="bg-white shadow-lg mb-6 p-6 rounded-lg w-full">
         <h3 className="flex items-center gap-2 font-semibold text-green-500 text-lg">
           <FaCheckCircle /> Finished Jobs
         </h3>
@@ -177,7 +177,7 @@ const Jobs = () => {
       </section>
 
       {/* Total Spent */}
-      <section className="bg-white shadow-lg mb-6 p-6 rounded-lg w-full max-w-4xl">
+      <section className="bg-white shadow-lg mb-6 p-6 rounded-lg w-full">
         <h3 className="flex items-center gap-2 font-semibold text-green-700 text-lg">
           <FaNairaSign /> Total Spent on Jobs
         </h3>
@@ -193,14 +193,14 @@ const Jobs = () => {
       </section>
 
       {/* Customer Support */}
-      <section className="bg-white shadow-lg p-6 rounded-lg w-full max-w-4xl">
-        <h3 className="flex items-center gap-2 font-semibold text-blue-800 text-lg">
+      <section className="bg-white shadow-lg p-6 rounded-lg w-full">
+        <h3 className="flex items-center gap-2 font-semibold text-green-800 text-lg">
           <FaPhoneAlt /> Customer Support
         </h3>
         <p className="text-gray-700">
           Need help? Get in touch with our support team.
         </p>
-        <button className="bg-blue-600 hover:bg-blue-700 mt-4 px-4 py-2 rounded-lg text-white transition duration-300">
+        <button className="bg-green-500 hover:bg-green-700 mt-4 px-4 py-2 rounded-lg text-white transition duration-300">
           Contact Support
         </button>
       </section>

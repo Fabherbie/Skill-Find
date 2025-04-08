@@ -1,7 +1,8 @@
-import { React, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FaStar, FaMapMarkerAlt, FaPhone } from "react-icons/fa";
 import ServiceProvidersModal from "../components/ServiceProvidersModal";
+import SearchAndFilterBar from "../components/SearchAndFilterBar";
 
 const serviceProviders = [
   {
@@ -398,34 +399,75 @@ const ServicesPage = () => {
   const { categorySlug } = useParams();
   const [selectedProvider, setSelectedProvider] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortOption, setSortOption] = useState("rating");
+  const [filteredProviders, setFilteredProviders] = useState(serviceProviders);
+
+  const handleSearchAndFilter = (searchTerm, filters) => {
+    let updatedProviders = [...serviceProviders];
+
+    // If you're on a category route, filter by categorySlug
+    if (categorySlug) {
+      updatedProviders = updatedProviders.filter(
+        (provider) =>
+          provider.category.toLowerCase() === categorySlug.toLowerCase()
+      );
+    }
+
+    // Search
+    if (searchTerm) {
+      const lowerSearch = searchTerm.toLowerCase();
+      updatedProviders = updatedProviders.filter(
+        (provider) =>
+          provider.name.toLowerCase().includes(lowerSearch) ||
+          provider.location.toLowerCase().includes(lowerSearch) ||
+          provider.category.toLowerCase().includes(lowerSearch)
+      );
+    }
+
+    // Filters
+    if (filters.category) {
+      updatedProviders = updatedProviders.filter(
+        (provider) =>
+          provider.category.toLowerCase() === filters.category.toLowerCase()
+      );
+    }
+
+    if (filters.location) {
+      updatedProviders = updatedProviders.filter((provider) =>
+        provider.location.toLowerCase().includes(filters.location.toLowerCase())
+      );
+    }
+
+    if (filters.price) {
+      const [minPrice, maxPrice] = filters.price.split("-").map(Number);
+      updatedProviders = updatedProviders.filter((provider) => {
+        if (!provider.price) return true; // Ignore if no price in data
+        if (maxPrice)
+          return provider.price >= minPrice && provider.price <= maxPrice;
+        return provider.price >= minPrice;
+      });
+    }
+
+    if (filters.rating) {
+      updatedProviders = updatedProviders.filter(
+        (provider) => provider.rating >= Number(filters.rating)
+      );
+    }
+
+    setFilteredProviders(updatedProviders);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
-  let filteredProviders = serviceProviders.filter(
-    (provider) => provider.category.toLowerCase() === categorySlug.toLowerCase()
-  );
-
-  // Apply search filter
-  if (searchQuery) {
-    filteredProviders = filteredProviders.filter(
-      (provider) =>
-        provider.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        provider.location.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }
-
-  // Apply sorting
-  filteredProviders.sort((a, b) => {
-    if (sortOption === "rating") {
-      return b.rating - a.rating;
-    } else if (sortOption === "name") {
-      return a.name.localeCompare(b.name);
+    // Set default filtered providers on load by categorySlug
+    if (categorySlug) {
+      setFilteredProviders(
+        serviceProviders.filter(
+          (provider) =>
+            provider.category.toLowerCase() === categorySlug.toLowerCase()
+        )
+      );
     }
-    return 0;
-  });
+  }, [categorySlug]);
 
   return (
     <div className="mx-auto px-4 py-6 pt-24 container">
@@ -440,30 +482,18 @@ const ServicesPage = () => {
       </div>
 
       <h1 className="mt-4 font-bold text-blue-950 text-2xl">
-        {categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1)} Providers
+        {categorySlug
+          ? `${
+              categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1)
+            } Providers`
+          : "All Service Providers"}
       </h1>
 
-      <div className="flex gap-4 mt-4">
-        <input
-          type="text"
-          placeholder="Search by name or location"
-          className="px-4 py-2 border border-blue-950 rounded-lg w-full"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-        <select
-          className="px-4 py-2 border border-blue-950 rounded-lg text-blue-950"
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-        >
-          <option value="rating" className="text-blue-950">
-            Sort by Rating
-          </option>
-          <option value="name" className="text-blue-950">
-            Sort by Name
-          </option>
-        </select>
-      </div>
+      <SearchAndFilterBar
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        onSearch={handleSearchAndFilter}
+      />
 
       {filteredProviders.length === 0 ? (
         <p className="mt-4 text-gray-500 text-center">
@@ -486,7 +516,9 @@ const ServicesPage = () => {
               </h2>
               <p className="text-gray-600">Location: {provider.location}</p>
               <p className="text-gray-600">Rating: ⭐ {provider.rating}</p>
-              <p className="text-gray-600">Phone: {provider.phone}</p>
+              <p className="text-gray-600">
+                Phone: <span className="font-medium">{provider.phone}</span>
+              </p>
               <button
                 className="bg-green-700 hover:bg-green-600 mt-2 px-4 py-2 rounded-lg w-full text-white"
                 onClick={() => setSelectedProvider(provider)}
@@ -509,3 +541,120 @@ const ServicesPage = () => {
 };
 
 export default ServicesPage;
+
+// const ServicesPage = () => {
+//   const navigate = useNavigate();
+//   const { categorySlug } = useParams();
+//   const [selectedProvider, setSelectedProvider] = useState(null);
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const [sortOption, setSortOption] = useState("rating");
+
+//   useEffect(() => {
+//     window.scrollTo(0, 0);
+//   }, []);
+
+//   let filteredProviders = serviceProviders.filter(
+//     (provider) => provider.category.toLowerCase() === categorySlug.toLowerCase()
+//   );
+
+//   // Apply search filter
+//   if (searchQuery) {
+//     filteredProviders = filteredProviders.filter(
+//       (provider) =>
+//         provider.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+//         provider.location.toLowerCase().includes(searchQuery.toLowerCase())
+//     );
+//   }
+
+//   // Apply sorting
+//   filteredProviders.sort((a, b) => {
+//     if (sortOption === "rating") {
+//       return b.rating - a.rating;
+//     } else if (sortOption === "name") {
+//       return a.name.localeCompare(b.name);
+//     }
+//     return 0;
+//   });
+
+//   return (
+//     <div className="mx-auto px-4 py-6 pt-24 container">
+//       {/* Back Button */}
+//       <div className="flex justify-start mb-4">
+//         <button
+//           className="bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg text-white"
+//           onClick={() => navigate(-1)}
+//         >
+//           ← Back
+//         </button>
+//       </div>
+
+//       <h1 className="mt-4 font-bold text-blue-950 text-2xl">
+//         {categorySlug.charAt(0).toUpperCase() + categorySlug.slice(1)} Providers
+//       </h1>
+
+//       <div className="flex gap-4 mt-4">
+//         <input
+//           type="text"
+//           placeholder="Search by name or location"
+//           className="px-4 py-2 border border-blue-950 rounded-lg w-full"
+//           value={searchQuery}
+//           onChange={(e) => setSearchQuery(e.target.value)}
+//         />
+//         <select
+//           className="px-4 py-2 border border-blue-950 rounded-lg text-blue-950"
+//           value={sortOption}
+//           onChange={(e) => setSortOption(e.target.value)}
+//         >
+//           <option value="rating" className="text-blue-950">
+//             Sort by Rating
+//           </option>
+//           <option value="name" className="text-blue-950">
+//             Sort by Name
+//           </option>
+//         </select>
+//       </div>
+
+//       {filteredProviders.length === 0 ? (
+//         <p className="mt-4 text-gray-500 text-center">
+//           No service providers found.
+//         </p>
+//       ) : (
+//         <div className="gap-6 grid grid-cols-1 md:grid-cols-3 mt-6">
+//           {filteredProviders.map((provider) => (
+//             <div
+//               key={provider.id}
+//               className="bg-gray-100 shadow-lg p-4 rounded-lg hover:scale-105 transition duration-300 transform"
+//             >
+//               <img
+//                 src={provider.image}
+//                 alt={provider.name}
+//                 className="rounded-lg w-full h-40 object-cover"
+//               />
+//               <h2 className="mt-2 font-semibold text-blue-950 text-lg">
+//                 {provider.name}
+//               </h2>
+//               <p className="text-gray-600">Location: {provider.location}</p>
+//               <p className="text-gray-600">Rating: ⭐ {provider.rating}</p>
+//               <p className="text-gray-600">Phone: {provider.phone}</p>
+//               <button
+//                 className="bg-green-700 hover:bg-green-600 mt-2 px-4 py-2 rounded-lg w-full text-white"
+//                 onClick={() => setSelectedProvider(provider)}
+//               >
+//                 Contact Provider
+//               </button>
+//             </div>
+//           ))}
+//         </div>
+//       )}
+
+//       {selectedProvider && (
+//         <ServiceProvidersModal
+//           provider={selectedProvider}
+//           onClose={() => setSelectedProvider(null)}
+//         />
+//       )}
+//     </div>
+//   );
+// };
+
+// export default ServicesPage;

@@ -1,28 +1,26 @@
-
 import { useState } from "react";
 
 const SignupProvider = () => {
-  const [role, setRole] = useState('')
+  const [role, setRole] = useState("");
   return (
     <div>
       <h1>Signup as a Provider</h1>
       {/* Your signup form here */}
-
-      <div className="flex min-h-screen items-center justify-center bg-gray-100">
-        <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold text-center text-gray-700">
+      <div className="flex justify-center items-center bg-gray-100 min-h-screen">
+        <div className="bg-white shadow-md p-6 rounded-lg w-full max-w-md">
+          <h2 className="font-bold text-gray-700 text-2xl text-center">
             Sign Up
           </h2>
 
           {/* Role Toggle */}
           <div className="flex justify-center my-4">
-
             <button
-              onClick={() => setRole('serviceProvider')}
-              className={`px-4 py-2 rounded-r-lg ${role === 'serviceProvider'
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200'
-                }`}
+              onClick={() => setRole("serviceProvider")}
+              className={`px-4 py-2 rounded-r-lg ${
+                role === "serviceProvider"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200"
+              }`}
             >
               Service Provider
             </button>
@@ -31,33 +29,33 @@ const SignupProvider = () => {
           {/* Sign-Up Form */}
           <form className="mt-4">
             <div className="mb-4">
-              <label className="block text-gray-600 text-sm mb-2">
+              <label className="block mb-2 text-gray-600 text-sm">
                 Full Name
               </label>
               <input
                 type="text"
                 placeholder="Enter your full name"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
               />
             </div>
 
-            {role === 'serviceProvider' && (
+            {role === "serviceProvider" && (
               <>
                 <div className="mb-4">
-                  <label className="block text-gray-600 text-sm mb-2">
+                  <label className="block mb-2 text-gray-600 text-sm">
                     Business Name
                   </label>
                   <input
                     type="text"
                     placeholder="Enter your business name"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-gray-600 text-sm mb-2">
+                  <label className="block mb-2 text-gray-600 text-sm">
                     Service Category
                   </label>
-                  <select className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <select className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
                     <option>Freelancer</option>
                     <option>Business Owner</option>
                     <option>Contractor</option>
@@ -67,33 +65,34 @@ const SignupProvider = () => {
               </>
             )}
 
-
             <div className="mb-4">
-              <label className="block text-gray-600 text-sm mb-2">Email</label>
+              <label className="block mb-2 text-gray-600 text-sm">Email</label>
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
               />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-600 text-sm mb-2">Password</label>
+              <label className="block mb-2 text-gray-600 text-sm">
+                Password
+              </label>
               <input
                 type="password"
                 placeholder="Enter your password"
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
               />
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+              className="bg-blue-500 hover:bg-blue-600 py-2 rounded-lg w-full text-white transition"
             >
               Sign Up
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-500 mt-4">
-            Already have an account?{' '}
+          <p className="mt-4 text-gray-500 text-sm text-center">
+            Already have an account?{" "}
             <a href="/signin" className="text-blue-500">
               Sign In
             </a>
@@ -101,7 +100,6 @@ const SignupProvider = () => {
         </div>
       </div>
       );
-
     </div>
   );
 };
