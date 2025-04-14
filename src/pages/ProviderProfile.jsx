@@ -9,6 +9,7 @@ import {
   FaLinkedin,
   FaCalendarAlt,
 } from "react-icons/fa";
+import "../index.css";
 
 const ProviderProfile = () => {
   const [isEditing, setIsEditing] = useState(false);

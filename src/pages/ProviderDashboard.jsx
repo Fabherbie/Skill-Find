@@ -25,7 +25,6 @@ const ProviderDashboard = () => {
   const escrowBalance = 35000;
   const newJobs = 5;
 
-  // ✅ FIXED: Add missing closing bracket to useEffect
   useEffect(() => {
     const timeout = setTimeout(() => {
       setLoading(false);
@@ -33,7 +32,6 @@ const ProviderDashboard = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  // ✅ FIXED: Show spinner if still loading
   if (loading) return <BrandSpinner />;
 
   return (

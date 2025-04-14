@@ -61,7 +61,7 @@ const ProviderSignup = () => {
 
   return (
     <div className="flex justify-center items-center bg-gradient-to-b from-green-200 to-green-300 opacity-0 min-h-screen animate-[fadeIn_1s_ease-out_forwards]">
-      <div className="grid grid-cols-1 md:grid-cols-2 shadow-xl mt-7 mb-6 rounded-2xl w-full max-w-5xl overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2 shadow-xl mt-7 mb-6 rounded-2xl w-full max-w-6xl overflow-hidden">
         <div
           className="md:block flex justify-center items-center space-x-4 bg-image bg-cover bg-no-repeat bg-center shadow-lg w-full h-full hover:scale-110 transition-all duration-1000 ease-in-out"
           style={{ backgroundImage: `url('/images/illustration.png')` }}
@@ -93,11 +93,15 @@ const ProviderSignup = () => {
             <div>
               <label
                 htmlFor="fullName"
-                className="block font-medium text-gray-700 text-sm"
+                className="block font-medium text-blue-9500 text-sm"
               >
                 Full Name
               </label>
               <input
+                id="fullName"
+                aria-invalid={errors.fullName ? "true" : "false"}
+                type="text"
+                placeholder="Enter Full Name"
                 name="fullName"
                 onChange={handleChange}
                 required
@@ -107,11 +111,14 @@ const ProviderSignup = () => {
             <div>
               <label
                 htmlFor="email"
-                className="block font-medium text-gray-700 text-sm"
+                className="block font-medium text-blue-950 text-sm"
               >
                 Email
               </label>
               <input
+                id="email"
+                aria-invalid={errors.email ? "true" : "false"}
+                placeholder="johndoe@mymail.com"
                 type="email"
                 name="email"
                 onChange={handleChange}
@@ -122,11 +129,15 @@ const ProviderSignup = () => {
             <div>
               <label
                 htmlFor="phone"
-                className="block font-medium text-gray-700 text-sm"
+                className="block font-medium text-blue-950 text-sm"
               >
                 Phone Number
               </label>
               <input
+                id="phone"
+                aria-invalid={errors.phone ? "true" : "false"}
+                placeholder="e.g., 080xxxxxxxx"
+                maxLength={11}
                 type="tel"
                 name="phone"
                 onChange={handleChange}
@@ -137,11 +148,15 @@ const ProviderSignup = () => {
             <div>
               <label
                 htmlFor="trade"
-                className="block font-medium text-gray-700 text-sm"
+                className="block font-medium text-blue-950 text-sm"
               >
                 Trade (e.g., Plumbing, Carpentry)
               </label>
               <input
+                id="trade"
+                aria-invalid={errors.trade ? "true" : "false"}
+                placeholder="e.g., Plumbing, Carpentry"
+                type="text"
                 name="trade"
                 onChange={handleChange}
                 required
@@ -151,11 +166,14 @@ const ProviderSignup = () => {
             <div>
               <label
                 htmlFor="nin"
-                className="block font-medium text-gray-700 text-sm"
+                className="block font-medium text-blue-950 text-sm"
               >
                 NIN
               </label>
               <input
+                id="nin"
+                aria-invalid={errors.nin ? "true" : "false"}
+                placeholder="e.g., 12345678901"
                 name="nin"
                 onChange={handleChange}
                 required
@@ -168,11 +186,12 @@ const ProviderSignup = () => {
             <div>
               <label
                 htmlFor="idUpload"
-                className="block font-medium text-gray-700 text-sm"
+                className="block font-medium text-blue-950 text-sm cursor-pointer"
               >
                 Upload Valid ID (e.g., NIN, Voter's Card, Driver's License)
               </label>
               <input
+                id="idUpload"
                 type="file"
                 name="idUpload"
                 accept="image/*,application/pdf"
@@ -186,7 +205,7 @@ const ProviderSignup = () => {
             <div>
               <label
                 htmlFor="password"
-                className="block font-medium text-gray-700 text-sm"
+                className="block font-medium text-blue-950 text-sm"
               >
                 Password
               </label>
@@ -241,34 +260,51 @@ const ProviderSignup = () => {
             </div>
             <button
               type="submit"
-              className="bg-green-600 hover:bg-green-500 px-4 py-2 rounded-lg w-full font-semibold text-white hover:animate-pulse"
+              className="bg-green-700 hover:bg-green-600 px-4 py-2 rounded-lg w-full font-semibold text-white hover:animate-pulse cursor-pointer"
             >
               Register
-            </button>
+            </button>{" "}
           </form>
 
-          <div className="mt-6">
+          <div className="mt-2">
             <p className="mb-2 text-gray-600 text-sm text-center">
               Or sign up with
             </p>
             <div className="flex justify-center gap-4">
-              <button className="flex items-center gap-2 bg-white px-4 py-2 border border-black rounded-md text-gray-700 text-sm hover:scale-105 transition-transform boarder">
+              <button className="flex flex-1 justify-center items-center gap-2 bg-white px-4 py-2 border border-black rounded-md text-blue-950 text-sm hover:scale-105 transition-transform cursor-pointer">
                 <img
-                  src="/icons/apple-logo.png"
+                  src="/icons/icons8-apple-inc.svg"
                   alt="Apple"
                   className="w-5 h-5"
                 />{" "}
                 Apple
               </button>
-              <button className="flex items-center gap-2 bg-white px-4 py-2 border border-green-700 rounded-lg text-gray-700 text-sm hover:scale-105 transition-transform">
+              <button className="flex flex-1 justify-center items-center gap-2 bg-white px-4 py-2 border border-red-600 rounded-lg text-blue-950 text-sm hover:scale-105 transition-transform cursor-pointer">
                 <img
-                  src="/icons/google-logo-2.png"
+                  src="/icons/icons8-google-logo.svg"
                   alt="Google"
                   className="w-5 h-5"
                 />{" "}
                 Google
               </button>
             </div>
+            <p className="mt-4 text-gray-600 text-sm text-center">
+              Already have an account?{" "}
+              <a href="/login" className="font-medium text-green-600">
+                Login{" "}
+              </a>{" "}
+            </p>
+          </div>
+
+          <div className="mt-4 text-gray-600 text-sm text-center">
+            By signing up, you agree to our{" "}
+            <a href="/terms" className="font-medium text-green-600">
+              Terms of Service
+            </a>{" "}
+            and{" "}
+            <a href="/privacy" className="font-medium text-green-600">
+              Privacy Policy
+            </a>
           </div>
         </div>
       </div>
