@@ -72,7 +72,7 @@ function App() {
           path="/signup-provider"
           element={
             <>
-              <Header /> {/* Global Header */}
+              {/* <Header /> Global Header */}
               <SignupProvider />
               <Footer />
             </>
